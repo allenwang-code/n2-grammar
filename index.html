@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>N2 文法</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #21262d;
+  --border: #30363d;
+  --t1: #e6edf3;
+  --t2: #8b949e;
+  --tjp: #f0e3c8;
+  --accent: #79c0ff;
+  --green: #56d364;
+  --red: #f85149;
+  --orange: #d29922;
+  --fs: 15px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: -apple-system, "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+  background: var(--bg);
+  color: var(--t1);
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs);
+}
+
+/* ── HEADER ── */
+#header {
+  padding: 11px 14px 10px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 50;
+  flex-shrink: 0;
+}
+.h-left { display: flex; flex-direction: column; }
+.h-title { font-size: 15px; font-weight: 800; letter-spacing: -0.01em; }
+.h-sub { font-size: 10px; color: var(--t2); margin-top: 1px; }
+.h-right { display: flex; gap: 6px; align-items: center; }
+.hbtn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--t2);
+  padding: 5px 9px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.hbtn.on { color: var(--accent); border-color: var(--accent); background: rgba(121,192,255,.08); }
+.hbtn.study-btn { color: var(--green); border-color: rgba(86,211,100,.35); background: rgba(86,211,100,.06); }
+
+/* ── MAIN ── */
+#main {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 14px 12px 100px;
+}
+
+/* cluster header */
+.cl-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.cl-badge {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 15px;
+  color: #0d1117;
+  flex-shrink: 0;
+}
+.cl-info { flex: 1; }
+.cl-name { font-size: 15px; font-weight: 800; }
+.cl-count { font-size: 11px; color: var(--t2); }
+
+/* ── CARD ── */
+.card {
+  background: var(--surface);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  border-left: 3px solid transparent;
+  overflow: hidden;
+  transition: opacity .2s;
+}
+.card.learned { opacity: 0.38; }
+.card:active { opacity: 0.75; }
+
+.card-top {
+  padding: 13px 13px 11px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+.card-num {
+  font-size: 10px;
+  color: var(--t2);
+  min-width: 18px;
+  padding-top: 3px;
+  font-weight: 600;
+}
+.card-body-left { flex: 1; min-width: 0; }
+.card-pattern {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--tjp);
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+.card-meaning {
+  font-size: 12px;
+  color: var(--t2);
+  margin-top: 5px;
+  line-height: 1.45;
+}
+.card-tags { display: flex; gap: 5px; margin-top: 6px; flex-wrap: wrap; }
+.tag-freq {
+  font-size: 10px;
+  background: rgba(210,153,34,.15);
+  color: #e3b341;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+.card-caret {
+  color: var(--border);
+  font-size: 12px;
+  padding-top: 4px;
+  transition: transform .2s;
+  flex-shrink: 0;
+}
+.card.open .card-caret { transform: rotate(180deg); }
+
+.card-detail {
+  display: none;
+  padding: 0 13px 13px 39px;
+}
+.card.open .card-detail { display: block; }
+
+.sep { height: 1px; background: var(--border); margin-bottom: 11px; }
+
+.ex-jp {
+  font-size: 16px;
+  color: var(--tjp);
+  line-height: 1.8;
+  font-weight: 500;
+}
+.ex-en {
+  font-size: 12px;
+  color: var(--t2);
+  margin-top: 4px;
+  line-height: 1.5;
+  font-style: italic;
+}
+.card-note {
+  margin-top: 10px;
+  padding: 8px 10px;
+  background: rgba(121,192,255,.07);
+  border-left: 2px solid rgba(121,192,255,.5);
+  border-radius: 0 6px 6px 0;
+  font-size: 12px;
+  color: var(--t2);
+  line-height: 1.6;
+}
+.card-note b { color: var(--t1); }
+.done-btn {
+  float: right;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--t2);
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  margin-bottom: 10px;
+}
+.done-btn.done { background: rgba(86,211,100,.08); color: var(--green); border-color: rgba(86,211,100,.4); }
+
+/* ── COMPARE SECTION ── */
+.cmp-block {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.cmp-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.cmp-table { width: 100%; border-collapse: collapse; }
+.cmp-table th {
+  font-size: 10px;
+  color: var(--t2);
+  text-align: left;
+  padding: 0 6px 6px 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.cmp-table td {
+  font-size: 13px;
+  color: var(--t1);
+  padding: 5px 6px 5px 0;
+  border-top: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.cmp-table td:first-child { color: var(--tjp); font-weight: 700; white-space: nowrap; }
+.cmp-ex { font-size: 12px; color: var(--t2); display: block; margin-top: 2px; }
+.cmp-vs { text-align: center; color: var(--t2); font-size: 11px; padding: 6px 0; }
+.scale-wrap { display: flex; align-items: center; gap: 0; margin: 8px 0 4px; overflow-x: auto; }
+.scale-item { text-align: center; flex: 1; min-width: 60px; }
+.scale-pat { font-size: 11px; font-weight: 700; color: var(--tjp); }
+.scale-desc { font-size: 10px; color: var(--t2); margin-top: 2px; }
+.scale-arr { color: var(--border); padding: 0 2px; font-size: 12px; flex-shrink: 0; }
+.scale-label { display: flex; justify-content: space-between; font-size: 10px; color: var(--t2); margin-top: 6px; }
+
+/* ── NAV ── */
+#nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  max-width: 480px;
+  margin: 0 auto;
+  background: rgba(13,17,23,.97);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border);
+  padding: 8px 8px env(safe-area-inset-bottom, 8px);
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  z-index: 50;
+}
+#nav::-webkit-scrollbar { display: none; }
+.ntab {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--t2);
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition: all .15s;
+  font-family: inherit;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.ntab-day {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  opacity: 0.65;
+}
+.ntab-name {
+  font-size: 12px;
+  font-weight: 800;
+}
+.ntab.active { color: #0d1117; }
+.ntab.active .ntab-day { opacity: 0.6; }
+
+/* ── STUDY OVERLAY ── */
+#study {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 200;
+  display: none;
+  flex-direction: column;
+  max-width: 480px;
+  margin: 0 auto;
+}
+#study.open { display: flex; }
+
+.st-header {
+  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.st-info { font-size: 13px; color: var(--t1); font-weight: 700; }
+.st-sub { font-size: 11px; color: var(--t2); margin-top: 1px; }
+.st-close {
+  background: none; border: none;
+  color: var(--t2); font-size: 20px;
+  cursor: pointer; padding: 4px;
+}
+.st-prog-wrap { padding: 0 16px 10px; flex-shrink: 0; }
+.st-prog { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 10px; }
+.st-prog-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .3s; }
+
+.st-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+  overflow: hidden;
+}
+.st-card {
+  width: 100%;
+  max-width: 400px;
+  min-height: 240px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .45s cubic-bezier(.4,0,.2,1);
+  cursor: pointer;
+  perspective: 1200px;
+}
+.st-card.flipped { transform: rotateY(180deg); }
+
+.st-front, .st-back {
+  position: absolute;
+  inset: 0;
+  min-height: 240px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 28px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.st-back { transform: rotateY(180deg); }
+
+.st-card-id { font-size: 11px; color: var(--t2); margin-bottom: 8px; }
+.st-pattern { font-size: 30px; font-weight: 900; color: var(--tjp); line-height: 1.25; }
+.st-meaning { font-size: 15px; color: var(--t2); margin-top: 10px; line-height: 1.5; }
+.st-hint { font-size: 11px; color: var(--border); margin-top: 18px; }
+.st-ex-jp { font-size: 17px; color: var(--tjp); line-height: 1.8; font-weight: 600; }
+.st-ex-en { font-size: 12px; color: var(--t2); margin-top: 5px; font-style: italic; line-height: 1.5; }
+.st-note { margin-top: 12px; font-size: 11px; color: var(--t2); background: rgba(255,255,255,.04); border-radius: 6px; padding: 8px 10px; line-height: 1.6; }
+
+.st-actions {
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px env(safe-area-inset-bottom, 16px);
+  flex-shrink: 0;
+}
+.st-again, .st-good {
+  flex: 1; padding: 15px; border-radius: 12px;
+  border: none; font-size: 14px; font-weight: 800;
+  cursor: pointer; font-family: inherit;
+}
+.st-again { background: rgba(248,81,73,.12); color: var(--red); }
+.st-good  { background: rgba(86,211,100,.12); color: var(--green); }
+.st-done-msg {
+  text-align: center;
+  padding: 20px;
+  color: var(--t2);
+  font-size: 14px;
+  display: none;
+}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="h-left">
+    <div class="h-title">N2 文法</div>
+    <div class="h-sub" id="h-sub">Loading…</div>
+  </div>
+  <div class="h-right">
+    <button class="hbtn" id="freq-btn" onclick="toggleFreq()">⚠️ Only</button>
+    <button class="hbtn" id="size-btn" onclick="cycleSize()">A</button>
+    <button class="hbtn study-btn" onclick="openStudy()">Study</button>
+  </div>
+</div>
+
+<div id="main"></div>
+
+<nav id="nav"></nav>
+
+<!-- Study overlay -->
+<div id="study">
+  <div class="st-header">
+    <div>
+      <div class="st-info" id="st-info">Study Mode</div>
+      <div class="st-sub" id="st-sub"></div>
+    </div>
+    <button class="st-close" onclick="closeStudy()">✕</button>
+  </div>
+  <div class="st-prog-wrap">
+    <div class="st-prog"><div class="st-prog-fill" id="st-prog-fill" style="width:0%"></div></div>
+  </div>
+  <div class="st-body">
+    <div class="st-card" id="st-card" onclick="flipCard()">
+      <div class="st-front" id="st-front"></div>
+      <div class="st-back"  id="st-back"></div>
+    </div>
+  </div>
+  <div class="st-done-msg" id="st-done">
+    🎉 Done! All cards reviewed.<br><br>
+    <button class="hbtn" onclick="restartStudy()">Restart</button>
+  </div>
+  <div class="st-actions" id="st-actions">
+    <button class="st-again" onclick="rateCard(false)">↩ Again</button>
+    <button class="st-good"  onclick="rateCard(true)">✓ Got it</button>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  DATA
+// ─────────────────────────────────────────────
+const CLUSTERS = [
+{
+  id:'A', name:'わけ Family', color:'#79c0ff',
+  patterns:[
+    { id:'A1', pat:'～わけだ', mean:'so naturally… / that explains it', freq:true,
+      jp:'毎日10時間勉強してたんだ。合格するわけだ。',
+      en:'"So you were studying 10 hours a day. No wonder you passed."',
+      note:'Use when you just learned info that explains an already-visible result.' },
+    { id:'A2', pat:'～わけではない', mean:"it's not that… (partial denial)", freq:true,
+      jp:'嫌いなわけではないけど、好きでもない。',
+      en:'"It\'s not that I dislike it — I just don\'t love it either."',
+      note:'Soften a statement. Not a total denial — something in between.' },
+    { id:'A3', pat:'～わけがない', mean:"there's no way / impossible", freq:true,
+      jp:'彼があんなひどいことをするわけがない。',
+      en:'"There\'s no way he\'d do something that terrible."',
+      note:'Conviction of impossibility. Stronger than 「はずがない」.' },
+    { id:'A4', pat:'～わけにはいかない', mean:"can't (social/moral block)", freq:true,
+      jp:'友達との約束を断るわけにはいかない。',
+      en:'"I can\'t back out on a promise to a friend."',
+      note:'Something feels morally/socially wrong to do. Always about obligation.' },
+    { id:'A5', pat:'～ないわけにはいかない', mean:"have no choice but to / can't not do", freq:true,
+      jp:'お世話になった人の葬式に行かないわけにはいかない。',
+      en:'"I have no choice but to go to the funeral of someone who looked after me."',
+      note:'Double negative = unavoidable obligation. Opposite feel from A4.' },
+    { id:'A6', pat:'～わけにもいかない', mean:"can't very well do (awkward)", freq:false,
+      jp:'上司に「あなたは間違っています」とは言うわけにもいかない。',
+      en:'"I can\'t very well tell my boss you\'re wrong."',
+      note:'Similar to A4 but softer — socially awkward rather than morally wrong.' },
+  ]
+},
+{
+  id:'B', name:'もの Advanced', color:'#56d364',
+  patterns:[
+    { id:'B1', pat:'～ものの', mean:'although / granted that (but reality differs)', freq:true,
+      jp:'努力したものの、結果は出なかった。',
+      en:'"Although I made every effort, results didn\'t come."',
+      note:'More formal and resigned than のに. Acknowledges reality without blame.' },
+    { id:'B2', pat:'～ものだから', mean:'because (soft explanation / apologetic)', freq:false,
+      jp:'急に子供が熱を出したものだから、遅刻してしまいました。',
+      en:'"Because my child suddenly had a fever, I ended up being late."',
+      note:'Soft excuse-tone. Implies the cause was out of your control.' },
+    { id:'B3', pat:'～ものがある', mean:'there is something (intangible quality) about…', freq:false,
+      jp:'彼の言葉には人を動かすものがある。',
+      en:'"There\'s something in his words that moves people."',
+      note:'Expresses an ineffable, hard-to-describe quality you feel.' },
+    { id:'B4', pat:'～ものか', mean:"as if I would! / no way! (strong refusal)", freq:false,
+      jp:'あんな人に謝るものか！',
+      en:'"As if I\'d apologize to someone like that!"',
+      note:'Strong internal refusal. Often said to oneself.' },
+    { id:'B5', pat:'～というものだ', mean:"that's the true nature of X / that's what X really is", freq:false,
+      jp:'人に頼らず自分でやってこそ、本当の成長というものだ。',
+      en:'"Only when you do it yourself — that\'s true growth."',
+      note:'Defines the essence of something. Wise/philosophical tone.' },
+    { id:'B6', pat:'～というものではない', mean:"it's not simply that…", freq:true,
+      jp:'謝ればいいというものではない。',
+      en:'"It\'s not simply a matter of just apologizing."',
+      note:'Pushes back on an oversimplified view.' },
+  ]
+},
+{
+  id:'C', name:'Formal Markers', color:'#e3b341',
+  patterns:[
+    { id:'C1', pat:'～において / における', mean:'in / at (formal context)', freq:true,
+      jp:'現代社会において、情報リテラシーは不可欠だ。',
+      en:'"In modern society, information literacy is indispensable."',
+      note:'における = noun modifier form: 現代社会における問題 (problems in modern society).' },
+    { id:'C2', pat:'～に関して / に関する', mean:'regarding / concerning (formal)', freq:false,
+      jp:'この件に関して、調査中です。',
+      en:'"We are currently investigating regarding this matter."',
+      note:'に関する = noun modifier. More formal than について.' },
+    { id:'C3', pat:'～に対して / に対する', mean:'toward / against / in contrast to', freq:true,
+      jp:'彼は私に対してずっと冷たい。 ／ 去年に対して売上が増えた。',
+      en:'"He\'s been cold toward me." / "Sales grew compared to last year."',
+      note:'Two meanings: ① directed at someone  ② compared to (contrast).' },
+    { id:'C4', pat:'～によって / による', mean:'by / due to / depending on', freq:true,
+      jp:'文化によって、マナーが違う。地震による被害が大きかった。',
+      en:'"Manners differ depending on culture." / "Damage due to the earthquake was large."',
+      note:'Three readings: ① depends on  ② by means of  ③ due to (cause).' },
+    { id:'C5', pat:'～として / としては', mean:'as / in the capacity of', freq:true,
+      jp:'医者として、正直に言います。',
+      en:'"As a doctor, I\'ll be honest with you."',
+      note:'としては = from the standpoint of. としても = even as.' },
+    { id:'C6', pat:'～をめぐって / をめぐる', mean:'surrounding / over (a controversy)', freq:false,
+      jp:'その政策をめぐって激しい議論が起きた。',
+      en:'"Fierce debate erupted surrounding that policy."',
+      note:'Always involves debate, conflict, or disputed topic.' },
+    { id:'C7', pat:'～をもとに / をもとにした', mean:'based on', freq:false,
+      jp:'実話をもとにした映画です。',
+      en:'"It\'s a film based on a true story."',
+      note:'More creative/interpretive than に基づいて.' },
+    { id:'C8', pat:'～を通して / を通じて', mean:'through / throughout / via', freq:false,
+      jp:'音楽を通して、世界とつながれる。',
+      en:'"Through music, you can connect with the world."',
+      note:'通して = means/medium. 通じて = channel/intermediary (interchangeable).' },
+    { id:'C9', pat:'～に沿って / に沿った', mean:'along / in line with / in accordance with', freq:false,
+      jp:'方針に沿って進めてください。',
+      en:'"Please proceed in line with the policy."',
+      note:'Physical (沿って道を歩く) or abstract (rules/plans) use.' },
+    { id:'C10', pat:'～に基づいて / に基づく', mean:'based on / grounded in', freq:true,
+      jp:'データに基づいた判断が重要だ。',
+      en:'"Judgments based on data are important."',
+      note:'More factual/technical than をもとに. Often used in reports.' },
+    { id:'C11', pat:'～に反して / に反する', mean:'contrary to / against', freq:false,
+      jp:'予想に反して、試験は簡単だった。',
+      en:'"Contrary to expectations, the exam was easy."',
+      note:'The result goes against what was expected or desired.' },
+    { id:'C12', pat:'～に応じて / に応じた', mean:'according to / in response to', freq:true,
+      jp:'状況に応じて判断してください。',
+      en:'"Please make judgments according to the situation."',
+      note:'Implies flexible adjustment to match the condition.' },
+    { id:'C13', pat:'～に従って / に従う', mean:'following / as X progresses Y changes', freq:true,
+      jp:'時間が経つに従って、痛みが引いた。　規則に従って行動する。',
+      en:'"As time passed, the pain subsided." / "Act following the rules."',
+      note:'⚠️ Two meanings: ① progressive change over time  ② obeying a rule.' },
+    { id:'C14', pat:'～にわたって / にわたる', mean:'spanning / over (range or area)', freq:false,
+      jp:'3時間にわたる会議だった。',
+      en:'"It was a meeting spanning 3 hours."',
+      note:'Used for time spans or geographical areas: 全国にわたる.' },
+    { id:'C15', pat:'～にあたって / にあたり', mean:'on the occasion of (milestone event)', freq:true,
+      jp:'卒業にあたって、一言お礼を述べます。',
+      en:'"On the occasion of graduation, I\'d like to say a word of thanks."',
+      note:'Only for significant non-routine events: ceremonies, new beginnings.' },
+    { id:'C16', pat:'～に先立って / に先立ち', mean:'prior to / before (something begins)', freq:false,
+      jp:'式典に先立って、リハーサルを行います。',
+      en:'"Prior to the ceremony, we will hold a rehearsal."',
+      note:'Formal. The action in に先立って prepares for or precedes the main event.' },
+    { id:'C17', pat:'～をきっかけに', mean:'triggered by / using X as an opportunity', freq:true,
+      jp:'病気をきっかけに、生活習慣を見直した。',
+      en:'"Using my illness as a trigger, I reconsidered my lifestyle."',
+      note:'The trigger caused a positive change in direction.' },
+    { id:'C18', pat:'～を契機に (けいきに)', mean:'as a turning point / with X as impetus', freq:false,
+      jp:'リーマンショックを契機に、働き方が変わった。',
+      en:'"With the Lehman shock as a turning point, how people work changed."',
+      note:'More formal and dramatic than をきっかけに. Used in news/essays.' },
+  ]
+},
+{
+  id:'D', name:'Limit & Restrict', color:'#f85149',
+  patterns:[
+    { id:'D1', pat:'～に限らず', mean:'not limited to / not only', freq:false,
+      jp:'大人に限らず、子供も楽しめる映画だ。',
+      en:'"Not just adults — even children can enjoy this movie."',
+      note:'Widens scope: X はもちろん、それ以外も.' },
+    { id:'D2', pat:'～に限って', mean:'only/of all people or times (ironic)', freq:true,
+      jp:'急いでいる時に限って、信号が赤になる。',
+      en:'"Of all times, it\'s always when I\'m in a hurry that lights turn red."',
+      note:'Strong ironic nuance: why now, of all times/people?!' },
+    { id:'D3', pat:'～に限る', mean:'nothing beats / X is the best', freq:false,
+      jp:'疲れた時は温泉に限る。',
+      en:'"When you\'re tired, nothing beats a hot spring."',
+      note:'Expresses strong personal recommendation.' },
+    { id:'D4', pat:'～はともかく', mean:'setting X aside / never mind X, but…', freq:true,
+      jp:'値段はともかく、デザインが気に入った。',
+      en:'"Setting aside the price, I love the design."',
+      note:'Acknowledges X but says it\'s not the point right now.' },
+    { id:'D5', pat:'～はさておき', mean:'putting X aside (more decisive)', freq:false,
+      jp:'冗談はさておき、本題に入りましょう。',
+      en:'"Jokes aside, let\'s get to the main topic."',
+      note:'More decisive than はともかく. Often signals transition in speech.' },
+    { id:'D6', pat:'～にかかわらず', mean:'regardless of', freq:true,
+      jp:'経験にかかわらず、誰でも応募できます。',
+      en:'"Regardless of experience, anyone can apply."',
+      note:'Pair it with contrasting options: 天気にかかわらず (rain or shine).' },
+    { id:'D7', pat:'～ないことには', mean:'unless / without (doing first, Y is impossible)', freq:true,
+      jp:'実際にやってみないことには、わからない。',
+      en:'"Unless you actually try it, you won\'t know."',
+      note:'Strong conditional: X must happen first. Y is usually negative.' },
+    { id:'D8', pat:'～ないことはない', mean:"it's not that I can't / possible, though…", freq:false,
+      jp:'行けないことはないけど、あまり気乗りしない。',
+      en:'"It\'s not that I can\'t go, but I\'m not really feeling it."',
+      note:'Double negative = reluctant possibility. Softens a refusal.' },
+    { id:'D9', pat:'～ないまでも', mean:'even if not X, at least Y', freq:false,
+      jp:'毎日ではないまでも、週に3回は運動したい。',
+      en:'"Even if not every day, I want to exercise at least 3 times a week."',
+      note:'Sets a lower but acceptable bar when the ideal is not achievable.' },
+  ]
+},
+{
+  id:'E', name:'Degree & Compare', color:'#bc8cff',
+  patterns:[
+    { id:'E1', pat:'～だけあって', mean:'as expected of (result matches status)', freq:true,
+      jp:'さすが10年のベテランだけあって、仕事が速い。',
+      en:'"As expected of a 10-year veteran — the work is fast."',
+      note:'Positive: the quality/result matches the title/effort. Impressed tone.' },
+    { id:'E2', pat:'～だけに', mean:'all the more because / precisely because', freq:true,
+      jp:'期待していただけに、裏切られた時のショックが大きかった。',
+      en:'"Precisely because I had high hopes, the betrayal hit harder."',
+      note:'Amplifies the result because of the cause. Can be positive or negative.' },
+    { id:'E3', pat:'～だけましだ', mean:'at least it\'s better / be grateful that', freq:false,
+      jp:'怪我したけど、骨折しなかっただけましだ。',
+      en:'"I got hurt, but at least I didn\'t break anything — that\'s something."',
+      note:'Consolation: it could have been worse.' },
+    { id:'E4', pat:'～にしては', mean:'considering / for (result is unexpected)', freq:true,
+      jp:'3か月勉強したにしては、上手すぎる。',
+      en:'"For someone who only studied 3 months, this is too good."',
+      note:'Always implies: the result doesn\'t match the expected level (better OR worse).' },
+    { id:'E5', pat:'～というより', mean:'rather than / more like', freq:false,
+      jp:'彼女は厳しいというより、情熱的なんだと思う。',
+      en:'"Rather than strict, I think she\'s passionate."',
+      note:'Reframes a description with a more accurate one.' },
+    { id:'E6', pat:'～にしても / にしろ / にせよ', mean:'even if / whether…or / either way', freq:true,
+      jp:'賛成するにしても反対するにしても、理由を言ってください。',
+      en:'"Whether you agree or disagree, please state your reasons."',
+      note:'Two uses: ① "even if X" ② "whether X or Y" — にしろ/にせよ more formal.' },
+    { id:'E7', pat:'～としたら / とすれば', mean:'if we suppose / hypothetically if', freq:true,
+      jp:'彼が本当のことを言っているとしたら、問題は深刻だ。',
+      en:'"If what he\'s saying is true, then the problem is serious."',
+      note:'More hypothetical/logical than たら. Speaker is reasoning from a premise.' },
+    { id:'E8', pat:'～だからこそ', mean:'precisely because / the very reason', freq:true,
+      jp:'難しいからこそ、やりがいがある。',
+      en:'"Precisely because it\'s difficult, it\'s rewarding."',
+      note:'こそ adds emphasis: the cause is specifically WHY Y is true.' },
+    { id:'E9', pat:'～ないことはない', mean:'not entirely impossible (grudging yes)', freq:false,
+      jp:'努力すれば合格できないことはない。',
+      en:'"It\'s not impossible to pass if you put in the effort."',
+      note:'Weaker and more reluctant than できる. Double-negative softening.' },
+  ]
+},
+{
+  id:'F', name:"Can't Help It", color:'#ffa657',
+  patterns:[
+    { id:'F1', pat:'～てならない', mean:"can't help feeling (deep emotional welling)", freq:true,
+      jp:'故郷が恋しくてならない。',
+      en:'"I can\'t help but long for my hometown."',
+      note:'Internal emotion that keeps welling up. Often nostalgia, worry, joy.' },
+    { id:'F2', pat:'～てたまらない', mean:"unbearably / can't stand (strong sensation)", freq:true,
+      jp:'眠くてたまらない。',
+      en:'"I\'m unbearably sleepy." (can\'t stand it)',
+      note:'Physically or emotionally overwhelming. More intense than F3.' },
+    { id:'F3', pat:'～てしょうがない / しかたがない', mean:"can't help it / stuck with it", freq:true,
+      jp:'あの映画が頭から離れてしょうがない。',
+      en:'"I can\'t get that movie out of my head."',
+      note:'Slightly resigned — you\'re just stuck with this feeling/situation.' },
+    { id:'F4', pat:'～ずにはいられない', mean:'can\'t help but DO (action-oriented)', freq:true,
+      jp:'彼の話を聞いて笑わずにはいられなかった。',
+      en:'"After hearing his story, I couldn\'t help but laugh."',
+      note:'KEY DIFF from F1–F3: triggers an ACTION, not just a feeling.' },
+    { id:'F5', pat:'～ないではいられない', mean:'can\'t help but (same as F4, softer)', freq:false,
+      jp:'不公平な扱いを見ると、怒らないではいられない。',
+      en:'"When I see unfair treatment, I can\'t help but get angry."',
+      note:'More literary/written than ずにはいられない.' },
+    { id:'F6', pat:'～ようがない / ようもない', mean:'there is no way to / impossible to', freq:true,
+      jp:'連絡先も知らないし、探しようがない。',
+      en:'"I don\'t even know their contact info — there\'s no way to look."',
+      note:'The means or method simply doesn\'t exist.' },
+    { id:'F7', pat:'～てはいられない', mean:"can't afford to be doing (urgency)", freq:false,
+      jp:'こんなところで遊んではいられない。',
+      en:'"I can\'t afford to be playing around in a place like this."',
+      note:'Urgency forces you to stop the current action.' },
+  ]
+},
+{
+  id:'G', name:'という Structures', color:'#39d353',
+  patterns:[
+    { id:'G1', pat:'～といっても', mean:"even though I say X, it's not extreme", freq:true,
+      jp:'海外経験があるといっても、観光で行っただけです。',
+      en:'"Even though I said I have overseas experience, I only went as a tourist."',
+      note:'Downgrades your own statement. Prevents misinterpretation.' },
+    { id:'G2', pat:'～といえば', mean:'speaking of / when you say X, I think of', freq:false,
+      jp:'京都といえば、金閣寺だよね。',
+      en:'"When you say Kyoto, you think of Kinkaku-ji."',
+      note:'Association trigger. Used to introduce related topics.' },
+    { id:'G3', pat:'～というのは', mean:'the thing called X is / X means', freq:false,
+      jp:'「根性」というのは、つらくても諦めない精神のことだ。',
+      en:'"What is called \'grit\' is the spirit of not giving up even when it\'s hard."',
+      note:'Defines or explains a term, concept, or word.' },
+    { id:'G4', pat:'～ということだ', mean:'I heard that / it means that (reported)', freq:true,
+      jp:'社長が辞めるということだ。',
+      en:'"I hear that the president is resigning."',
+      note:'Softer hearsay marker than らしい or そうだ.' },
+    { id:'G5', pat:'～ということは', mean:'which means / if that\'s the case then', freq:true,
+      jp:'彼が来ないということは、何かあったんだろう。',
+      en:'"Which means something must have come up for him."',
+      note:'Logical inference drawn from new information.' },
+  ]
+},
+{
+  id:'H', name:'Formal Time', color:'#79c0ff',
+  patterns:[
+    { id:'H1', pat:'～次第 (しだい)', mean:'as soon as (formal, often future)', freq:true,
+      jp:'準備でき次第、お知らせします。',
+      en:'"As soon as preparations are complete, I\'ll let you know."',
+      note:'Always formal; implies immediate action when condition is met.' },
+    { id:'H2', pat:'～次第で / 次第だ', mean:'depending on / it all depends on', freq:true,
+      jp:'やる気次第で、結果は変わる。',
+      en:'"Results change depending on motivation."',
+      note:'Different from H1! This means "contingent on" not "as soon as".' },
+    { id:'H3', pat:'～た途端に (とたんに)', mean:'the very instant / the moment', freq:true,
+      jp:'外に出た途端に、雨が降り出した。',
+      en:'"The very moment I stepped outside, it started raining."',
+      note:'Emphasizes instantaneous surprise. Y happens immediately after X.' },
+    { id:'H4', pat:'～うちに', mean:'while / before the situation changes', freq:true,
+      jp:'若いうちに、いろんな経験をしておくべきだ。',
+      en:'"While you\'re young, you should accumulate various experiences."',
+      note:'The window will close — do Y before the state X ends.' },
+    { id:'H5', pat:'～ないうちに', mean:'before X happens (do Y first)', freq:false,
+      jp:'忘れないうちに、メモしておいた。',
+      en:'"Before I forgot, I made a note of it."',
+      note:'Y is done proactively before the negative state kicks in.' },
+    { id:'H6', pat:'～にあたって / にあたり', mean:'on the occasion of (major milestone)', freq:true,
+      jp:'入社にあたって、心がけていることがあります。',
+      en:'"On the occasion of joining the company, there are things I keep in mind."',
+      note:'Only for significant, non-routine events: ceremonies, new beginnings.' },
+    { id:'H7', pat:'～に先立って / に先立ち', mean:'prior to / before X begins (formal)', freq:false,
+      jp:'手術に先立って、説明を行います。',
+      en:'"Prior to the surgery, we will give an explanation."',
+      note:'Formal. The action prepares for or precedes the main event.' },
+  ]
+},
+{
+  id:'I', name:'Cause & Contrast', color:'#ffa657',
+  patterns:[
+    { id:'I1', pat:'～ことから', mean:'from the fact that / because (reasoning)', freq:true,
+      jp:'葉が黄色くなっていることから、秋が近いとわかる。',
+      en:'"From the fact that leaves are turning yellow, we can tell autumn is near."',
+      note:'The reason is observed evidence used to draw a conclusion.' },
+    { id:'I2', pat:'～ことで', mean:'by doing / through the act of', freq:false,
+      jp:'日記をつけることで、自分の気持ちを整理できる。',
+      en:'"By keeping a journal, you can organize your feelings."',
+      note:'The action in ことで is the method/means.' },
+    { id:'I3', pat:'～ことなく', mean:'without doing (formal / literary)', freq:false,
+      jp:'諦めることなく、挑戦し続けた。',
+      en:'"He continued to challenge without giving up."',
+      note:'Formal alternative to ～ずに. Written/literary tone.' },
+    { id:'I4', pat:'～ことか', mean:'how…! / what a…! (rhetorical emotion)', freq:false,
+      jp:'どれほど心配したことか。',
+      en:'"How worried I was!" (rhetorical emphasis)',
+      note:'The more/how, the stronger the feeling expressed.' },
+    { id:'I5', pat:'～ことに', mean:'to my [emotion] / it is [emotion] that', freq:false,
+      jp:'残念なことに、彼は来られなかった。',
+      en:'"To my disappointment, he couldn\'t make it."',
+      note:'Sets emotional tone at sentence start. うれしいことに、悲しいことに…' },
+    { id:'I6', pat:'～とともに', mean:'together with / as X changes, Y changes', freq:true,
+      jp:'時代とともに、価値観も変わった。彼女とともに夢を追いたい。',
+      en:'"As the times changed, values did too." / "I want to chase dreams together with her."',
+      note:'Two uses: ① simultaneous change  ② doing something together with someone.' },
+    { id:'I7', pat:'～にかけては', mean:'when it comes to / in the area of', freq:false,
+      jp:'料理の腕にかけては、誰にも負けない。',
+      en:'"When it comes to cooking skill, I lose to no one."',
+      note:'Highlights someone\'s domain of excellence.' },
+    { id:'I8', pat:'～に加えて (くわえて)', mean:'in addition to / on top of (formal)', freq:false,
+      jp:'経験に加えて、資格も持っている。',
+      en:'"In addition to experience, they also have qualifications."',
+      note:'Formal stacking of positives (or negatives). Written style.' },
+    { id:'I9', pat:'～に比べて (くらべて)', mean:'compared to', freq:false,
+      jp:'去年に比べて、今年は売上が20%増えた。',
+      en:'"Compared to last year, sales increased 20% this year."',
+      note:'Very common in reading passages with data/statistics.' },
+  ]
+},
+{
+  id:'J', name:'Scope & Range', color:'#ff6e96',
+  patterns:[
+    { id:'J1', pat:'～をはじめ(として)', mean:'starting with / including (such as)', freq:true,
+      jp:'東京をはじめ、全国で大雪が降った。',
+      en:'"Starting with Tokyo, heavy snow fell across the country."',
+      note:'Introduces the most prominent example; implies others also apply.' },
+    { id:'J2', pat:'～を中心に / を中心として', mean:'centered on / focusing on', freq:false,
+      jp:'若者を中心に、この音楽が流行っている。',
+      en:'"This music is popular, centered among young people."',
+      note:'Shows who/what the activity is focused on.' },
+    { id:'J3', pat:'～向けに / 向きに (むけ)', mean:'aimed at / designed for', freq:true,
+      jp:'初心者向けに書かれた本だ。',
+      en:'"It\'s a book written for beginners."',
+      note:'向けに = explicitly targeted at. 向きに = naturally suits.' },
+    { id:'J4', pat:'～にわたって / にわたる', mean:'spanning / over (range or area)', freq:false,
+      jp:'3日間にわたって、会議が続いた。',
+      en:'"The meeting continued spanning 3 days."',
+      note:'Used for time spans or areas. にわたる = noun modifier form.' },
+  ]
+},
+{
+  id:'K', name:'Reproach & Commit', color:'#d2a8ff',
+  patterns:[
+    { id:'K1', pat:'～くせに', mean:'even though (accusatory / blaming)', freq:true,
+      jp:'何も知らないくせに、偉そうなことを言うな。',
+      en:'"Don\'t act all high and mighty when you don\'t know anything."',
+      note:'Strong negative emotion. NEVER use with superiors — very rude.' },
+    { id:'K2', pat:'～ながら (concessive)', mean:'even while / despite (formal, no blame)', freq:true,
+      jp:'悪いと知りながら、やめられない。',
+      en:'"Even knowing it\'s bad, I can\'t stop."',
+      note:'Written/literary contrast. No blame unlike くせに.' },
+    { id:'K3', pat:'～からには', mean:'now that / since (personal commitment)', freq:true,
+      jp:'やると言ったからには、最後までやり遂げる。',
+      en:'"Now that I\'ve said I\'ll do it, I\'ll see it through to the end."',
+      note:'Emotional resolve. The speaker feels obligated because of their own choice.' },
+    { id:'K4', pat:'～以上は / 以上 (いじょう)', mean:'given that / since (logical obligation)', freq:true,
+      jp:'責任者である以上、問題から逃げられない。',
+      en:'"Given that I am the person responsible, I cannot run from the problem."',
+      note:'More formal/logical than からには. Used in written language and essays.' },
+  ]
+},
+];
+
+const COMPARES = [
+  {
+    title: 'わけにはいかない vs ないわけにはいかない',
+    rows: [
+      { pat:'わけにはいかない', desc:"can't do it (social/moral block)", ex:'行くわけにはいかない → "I can\'t go (it would be wrong)"' },
+      { pat:'ないわけにはいかない', desc:"can't NOT do it (must do it)", ex:'行かないわけにはいかない → "I have no choice but to go"' },
+    ]
+  },
+  {
+    title: 'だけあって vs だけに vs にしては',
+    rows: [
+      { pat:'だけあって', desc:'result MATCHES status/effort (impressed)', ex:'プロだけあって、うまい。"As expected of a pro."' },
+      { pat:'だけに', desc:'cause AMPLIFIES result (stronger effect)', ex:'プロだけに、プレッシャーも大きい。"Precisely because a pro, pressure is huge."' },
+      { pat:'にしては', desc:'result is UNEXPECTED for the level', ex:'3ヶ月にしては上手だ。"Pretty good for only 3 months."' },
+    ]
+  },
+  {
+    title: 'からには vs 以上は',
+    rows: [
+      { pat:'からには', desc:'emotional commitment / personal resolve', ex:'プロになったからには、全力を尽くす。' },
+      { pat:'以上は', desc:'logical/formal obligation (written)', ex:'責任者である以上は、報告する義務がある。' },
+    ]
+  },
+  {
+    title: 'てならない vs てたまらない vs てしょうがない',
+    rows: [
+      { pat:'てならない', desc:'deep emotional welling (nostalgia, worry, joy)', ex:'故郷が懐かしくてならない。' },
+      { pat:'てたまらない', desc:'unbearable physical or emotional sensation', ex:'腹が痛くてたまらない。' },
+      { pat:'てしょうがない', desc:"stuck with it, slightly resigned", ex:'あの曲が頭から離れてしょうがない。' },
+    ]
+  },
+  {
+    title: 'にあたって vs に先立って vs 次第',
+    rows: [
+      { pat:'にあたって', desc:'ON THE OCCASION OF (during/for a milestone)', ex:'入学にあたって、準備をする。' },
+      { pat:'に先立って', desc:'PRIOR TO (before X starts)', ex:'式典に先立って、リハーサルする。' },
+      { pat:'次第', desc:'AS SOON AS (the moment X is done)', ex:'準備でき次第、出発する。' },
+    ]
+  },
+  {
+    title: 'Speculation Certainty Scale',
+    scale: [
+      { pat:'かもしれない', desc:'maybe' },
+      { pat:'ようだ', desc:'seems' },
+      { pat:'らしい', desc:'heard' },
+      { pat:'はずだ', desc:'expected' },
+      { pat:'に違いない', desc:'must be' },
+    ],
+    scaleLabel: ['低 (uncertain)', '高 (certain)']
+  },
+  {
+    title: 'によって — Three Meanings',
+    rows: [
+      { pat:'依存 (depends on)', desc:'The result varies based on X', ex:'文化によって、マナーが違う。' },
+      { pat:'手段 (by means of)', desc:'X is the method used', ex:'努力によって、夢は叶う。' },
+      { pat:'原因 (due to)', desc:'X is the cause (used as noun modifier)', ex:'地震による被害 (damage due to earthquake)' },
+    ]
+  },
+  {
+    title: 'に従って — Two Meanings',
+    rows: [
+      { pat:'変化 (progressive change)', desc:'As X progresses, Y naturally changes', ex:'時間が経つに従って、痛みが引いた。' },
+      { pat:'従順 (following a rule)', desc:'Obey / act in accordance with X', ex:'規則に従って行動する。' },
+    ]
+  },
+];
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+let currentCluster = 'A';
+let freqOnly = false;
+let fontSize = 1; // 0=small 1=med 2=large
+const FS_VALS = ['13px','15px','17px'];
+const FS_LABELS = ['A⁻','A','A⁺'];
+
+function getLearned() {
+  try { return JSON.parse(localStorage.getItem('n2_learned') || '{}'); } catch { return {}; }
+}
+function setLearned(obj) {
+  try { localStorage.setItem('n2_learned', JSON.stringify(obj)); } catch {}
+}
+function isLearned(id) { return !!getLearned()[id]; }
+function toggleLearned(id) {
+  const l = getLearned();
+  l[id] ? delete l[id] : (l[id] = 1);
+  setLearned(l);
+}
+
+// ─────────────────────────────────────────────
+//  RENDER
+// ─────────────────────────────────────────────
+function render() {
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+
+  if (currentCluster === 'Z') {
+    renderCompare(main);
+    updateHeader();
+    return;
+  }
+
+  const cl = CLUSTERS.find(c => c.id === currentCluster);
+  if (!cl) return;
+
+  const head = document.createElement('div');
+  head.className = 'cl-head';
+  head.innerHTML = `
+    <div class="cl-badge" style="background:${cl.color}">${cl.id}</div>
+    <div class="cl-info">
+      <div class="cl-name">${cl.name}</div>
+      <div class="cl-count">${cl.patterns.length} patterns</div>
+    </div>`;
+  main.appendChild(head);
+
+  let shown = 0;
+  cl.patterns.forEach(p => {
+    if (freqOnly && !p.freq) return;
+    shown++;
+    main.appendChild(makeCard(p, cl.color));
+  });
+
+  if (shown === 0) {
+    const msg = document.createElement('div');
+    msg.style.cssText = 'color:var(--t2);font-size:13px;text-align:center;margin-top:40px;';
+    msg.textContent = 'No ⚠️ patterns in this cluster.';
+    main.appendChild(msg);
+  }
+
+  updateHeader();
+}
+
+function makeCard(p, color) {
+  const learned = isLearned(p.id);
+  const div = document.createElement('div');
+  div.className = `card${div.open ? ' open' : ''}${learned ? ' learned' : ''}`;
+  div.style.borderLeftColor = color;
+  div.id = `card-${p.id}`;
+  div.innerHTML = `
+    <div class="card-top" onclick="toggleCard('${p.id}')">
+      <div class="card-num">${p.id}</div>
+      <div class="card-body-left">
+        <div class="card-pattern">${p.pat}</div>
+        <div class="card-meaning">${p.mean}</div>
+        ${p.freq ? '<div class="card-tags"><span class="tag-freq">⚠️ High Freq</span></div>' : ''}
+      </div>
+      <div class="card-caret">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="sep"></div>
+      <button class="done-btn${learned ? ' done' : ''}" onclick="event.stopPropagation();markDone('${p.id}')">${learned ? '✓ Learned' : 'Mark learned'}</button>
+      <div class="ex-jp">${p.jp}</div>
+      <div class="ex-en">${p.en}</div>
+      ${p.note ? `<div class="card-note">${p.note.replace(/([A-Z1-9①-⑨]+)/g, '<b>$1</b>')}</div>` : ''}
+    </div>`;
+  return div;
+}
+
+function renderCompare(main) {
+  const head = document.createElement('div');
+  head.className = 'cl-head';
+  head.innerHTML = `
+    <div class="cl-badge" style="background:#58a6ff">⇄</div>
+    <div class="cl-info">
+      <div class="cl-name">Comparison Tables</div>
+      <div class="cl-count">${COMPARES.length} comparisons</div>
+    </div>`;
+  main.appendChild(head);
+
+  COMPARES.forEach(c => {
+    const block = document.createElement('div');
+    block.className = 'cmp-block';
+    let html = `<div class="cmp-title">${c.title}</div>`;
+
+    if (c.scale) {
+      html += `<div class="scale-wrap">`;
+      c.scale.forEach((s, i) => {
+        html += `<div class="scale-item"><div class="scale-pat">${s.pat}</div><div class="scale-desc">${s.desc}</div></div>`;
+        if (i < c.scale.length - 1) html += `<div class="scale-arr">→</div>`;
+      });
+      html += `</div><div class="scale-label"><span>${c.scaleLabel[0]}</span><span>${c.scaleLabel[1]}</span></div>`;
+    } else {
+      html += `<table class="cmp-table"><thead><tr><th>Pattern</th><th>When to use</th></tr></thead><tbody>`;
+      c.rows.forEach(r => {
+        html += `<tr><td>${r.pat}</td><td>${r.desc}<span class="cmp-ex">${r.ex}</span></td></tr>`;
+      });
+      html += `</tbody></table>`;
+    }
+
+    block.innerHTML = html;
+    main.appendChild(block);
+  });
+}
+
+function updateHeader() {
+  const cl = currentCluster === 'Z' ? null : CLUSTERS.find(c => c.id === currentCluster);
+  const learned = getLearned();
+  const total = CLUSTERS.reduce((s, c) => s + c.patterns.length, 0);
+  const learnedCount = Object.keys(learned).length;
+  document.getElementById('h-sub').textContent =
+    cl ? `${cl.name}  ·  ${learnedCount}/${total} learned` : `Comparisons  ·  ${learnedCount}/${total} learned`;
+}
+
+// ─────────────────────────────────────────────
+//  NAV
+// ─────────────────────────────────────────────
+function buildNav() {
+  const nav = document.getElementById('nav');
+  nav.innerHTML = '';
+  const all = [...CLUSTERS, { id:'Z', name:'Compare', color:'#58a6ff' }];
+  all.forEach((cl, i) => {
+    const btn = document.createElement('button');
+    const isActive = cl.id === currentCluster;
+    btn.className = `ntab${isActive ? ' active' : ''}`;
+    if (isActive) btn.style.background = cl.color;
+    if (cl.id === 'Z') {
+      btn.innerHTML = `<span class="ntab-day">⇄</span><span class="ntab-name">Compare</span>`;
+    } else {
+      btn.innerHTML = `<span class="ntab-day">Day ${i + 1}</span><span class="ntab-name">${cl.name}</span>`;
+    }
+    btn.onclick = () => switchCluster(cl.id);
+    nav.appendChild(btn);
+  });
+  // scroll active tab into view
+  const active = nav.querySelector('.ntab.active');
+  if (active) active.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+}
+
+function switchCluster(id) {
+  currentCluster = id;
+  buildNav();
+  render();
+  document.getElementById('main').scrollTop = 0;
+}
+
+// ─────────────────────────────────────────────
+//  CARD INTERACTIONS
+// ─────────────────────────────────────────────
+function toggleCard(id) {
+  const el = document.getElementById(`card-${id}`);
+  if (!el) return;
+  el.classList.toggle('open');
+}
+
+function markDone(id) {
+  toggleLearned(id);
+  const card = document.getElementById(`card-${id}`);
+  if (!card) return;
+  const btn = card.querySelector('.done-btn');
+  const learned = isLearned(id);
+  btn.textContent = learned ? '✓ Learned' : 'Mark learned';
+  btn.className = `done-btn${learned ? ' done' : ''}`;
+  card.classList.toggle('learned', learned);
+  updateHeader();
+}
+
+function toggleFreq() {
+  freqOnly = !freqOnly;
+  const btn = document.getElementById('freq-btn');
+  btn.classList.toggle('on', freqOnly);
+  render();
+}
+
+function cycleSize() {
+  fontSize = (fontSize + 1) % 3;
+  document.documentElement.style.setProperty('--fs', FS_VALS[fontSize]);
+  document.getElementById('size-btn').textContent = FS_LABELS[fontSize];
+}
+
+// ─────────────────────────────────────────────
+//  STUDY MODE
+// ─────────────────────────────────────────────
+let studyQueue = [];
+let studyIdx = 0;
+let studyFlipped = false;
+
+function openStudy() {
+  const cl = CLUSTERS.find(c => c.id === currentCluster);
+  const pool = cl
+    ? cl.patterns.filter(p => !freqOnly || p.freq)
+    : CLUSTERS.flatMap(c => c.patterns.filter(p => !freqOnly || p.freq));
+
+  studyQueue = [...pool].sort(() => Math.random() - 0.5);
+  studyIdx = 0;
+  studyFlipped = false;
+
+  document.getElementById('study').classList.add('open');
+  document.getElementById('st-done').style.display = 'none';
+  document.getElementById('st-actions').style.display = 'flex';
+  document.getElementById('st-card').style.display = 'block';
+
+  const name = cl ? cl.name : 'All Clusters';
+  document.getElementById('st-info').textContent = `Study — ${name}`;
+
+  showStudyCard();
+}
+
+function closeStudy() {
+  document.getElementById('study').classList.remove('open');
+}
+
+function showStudyCard() {
+  if (studyIdx >= studyQueue.length) {
+    document.getElementById('st-done').style.display = 'block';
+    document.getElementById('st-actions').style.display = 'none';
+    document.getElementById('st-card').style.display = 'none';
+    return;
+  }
+  const p = studyQueue[studyIdx];
+  const cl = CLUSTERS.find(c => c.patterns.some(x => x.id === p.id));
+  studyFlipped = false;
+  document.getElementById('st-card').classList.remove('flipped');
+
+  document.getElementById('st-front').innerHTML = `
+    <div class="st-card-id">${p.id} ${cl ? '· ' + cl.name : ''}</div>
+    <div class="st-pattern">${p.pat}</div>
+    <div class="st-meaning">${p.mean}</div>
+    <div class="st-hint">Tap to see example →</div>`;
+
+  document.getElementById('st-back').innerHTML = `
+    <div class="st-card-id">${p.id} ${cl ? '· ' + cl.name : ''}</div>
+    <div class="st-pattern" style="font-size:18px">${p.pat}</div>
+    <div class="st-ex-jp" style="margin-top:12px">${p.jp}</div>
+    <div class="st-ex-en">${p.en}</div>
+    ${p.note ? `<div class="st-note">${p.note}</div>` : ''}`;
+
+  const pct = Math.round((studyIdx / studyQueue.length) * 100);
+  document.getElementById('st-prog-fill').style.width = pct + '%';
+  document.getElementById('st-sub').textContent = `${studyIdx + 1} / ${studyQueue.length}`;
+}
+
+function flipCard() {
+  studyFlipped = !studyFlipped;
+  document.getElementById('st-card').classList.toggle('flipped', studyFlipped);
+}
+
+function rateCard(good) {
+  if (!studyFlipped) { flipCard(); return; }
+  if (good) markDone(studyQueue[studyIdx].id);
+  studyIdx++;
+  showStudyCard();
+}
+
+function restartStudy() {
+  studyIdx = 0;
+  studyQueue.sort(() => Math.random() - 0.5);
+  document.getElementById('st-done').style.display = 'none';
+  document.getElementById('st-actions').style.display = 'flex';
+  document.getElementById('st-card').style.display = 'block';
+  showStudyCard();
+}
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+buildNav();
+render();
+</script>
+</body>
+</html>
