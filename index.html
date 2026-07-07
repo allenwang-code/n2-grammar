@@ -5,26 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<title>N2 文法</title>
+<title>N2 文法・聴解</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700;800&family=Noto+Sans+JP:wght@400;600;800&family=Noto+Sans+TC:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0d1117;
-  --surface: #161b22;
-  --surface2: #21262d;
-  --border: #30363d;
-  --t1: #e6edf3;
-  --t2: #8b949e;
-  --tjp: #f0e3c8;
-  --accent: #79c0ff;
-  --green: #56d364;
-  --red: #f85149;
-  --orange: #d29922;
+  --bg: #F6F4EE;
+  --surface: #FFFFFF;
+  --surface2: #EFECE3;
+  --border: #DAD5C7;
+  --t1: #23252C;
+  --t2: #6B6E76;
+  --tjp: #23252C;
+  --indigo: #25406E;
+  --accent: #25406E;
+  --shu: #C0413B;
+  --green: #2E7D4F;
+  --red: #C0413B;
+  --orange: #C8942B;
+  --tip-bg: #EEF1F6;
   --fs: 15px;
+  --mincho: "Shippori Mincho", "Noto Serif JP", "Hiragino Mincho ProN", serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overflow: hidden; }
 body {
-  font-family: -apple-system, "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+  font-family: -apple-system, "Noto Sans JP", "Noto Sans TC", "Hiragino Sans", "Yu Gothic", sans-serif;
   background: var(--bg);
   color: var(--t1);
   max-width: 480px;
@@ -36,9 +42,9 @@ body {
 
 /* ── HEADER ── */
 #header {
-  padding: 11px 14px 10px;
+  padding: 12px 14px 10px;
   background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 3px double var(--indigo);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -46,11 +52,11 @@ body {
   flex-shrink: 0;
 }
 .h-left { display: flex; flex-direction: column; }
-.h-title { font-size: 15px; font-weight: 800; letter-spacing: -0.01em; }
-.h-sub { font-size: 10px; color: var(--t2); margin-top: 1px; }
+.h-title { font-family: var(--mincho); font-size: 16px; font-weight: 800; color: var(--indigo); letter-spacing: .02em; }
+.h-sub { font-size: 10px; color: var(--t2); margin-top: 2px; }
 .h-right { display: flex; gap: 6px; align-items: center; }
 .hbtn {
-  background: var(--surface2);
+  background: var(--surface);
   border: 1px solid var(--border);
   color: var(--t2);
   padding: 5px 9px;
@@ -60,46 +66,49 @@ body {
   cursor: pointer;
   font-family: inherit;
 }
-.hbtn.on { color: var(--accent); border-color: var(--accent); background: rgba(121,192,255,.08); }
-.hbtn.study-btn { color: var(--green); border-color: rgba(86,211,100,.35); background: rgba(86,211,100,.06); }
+.hbtn.on { color: var(--indigo); border-color: var(--indigo); background: rgba(37,64,110,.06); }
+.hbtn.study-btn { color: #fff; border-color: var(--indigo); background: var(--indigo); }
 
 /* ── MAIN ── */
 #main {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 14px 12px 100px;
+  padding: 16px 12px 100px;
 }
 
 /* cluster header */
 .cl-head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   margin-bottom: 12px;
 }
 .cl-badge {
-  width: 34px; height: 34px;
-  border-radius: 9px;
+  width: 36px; height: 36px;
+  border-radius: 4px;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 900; font-size: 15px;
-  color: #0d1117;
+  font-family: var(--mincho);
+  font-weight: 800; font-size: 16px;
+  color: #fff;
   flex-shrink: 0;
 }
 .cl-info { flex: 1; }
-.cl-name { font-size: 15px; font-weight: 800; }
-.cl-count { font-size: 11px; color: var(--t2); }
+.cl-name { font-family: var(--mincho); font-size: 17px; font-weight: 800; color: var(--indigo); }
+.cl-count { font-size: 11px; color: var(--shu); font-weight: 700; margin-top: 1px; }
+.cl-desc { font-size: 12px; color: var(--t2); margin-top: 4px; line-height: 1.6; }
 
 /* ── CARD ── */
 .card {
   background: var(--surface);
-  border-radius: 12px;
-  margin-bottom: 8px;
-  border-left: 3px solid transparent;
+  border: 1px solid var(--border);
+  border-left: 4px solid transparent;
+  border-radius: 6px;
+  margin-bottom: 9px;
   overflow: hidden;
   transition: opacity .2s;
 }
-.card.learned { opacity: 0.38; }
+.card.learned { opacity: 0.45; }
 .card:active { opacity: 0.75; }
 
 .card-top {
@@ -112,29 +121,29 @@ body {
 .card-num {
   font-size: 10px;
   color: var(--t2);
-  min-width: 18px;
-  padding-top: 3px;
+  min-width: 20px;
+  padding-top: 5px;
   font-weight: 600;
 }
 .card-body-left { flex: 1; min-width: 0; }
 .card-pattern {
-  font-size: 21px;
+  font-family: var(--mincho);
+  font-size: 20px;
   font-weight: 800;
-  color: var(--tjp);
-  line-height: 1.3;
-  letter-spacing: 0.01em;
+  color: var(--t1);
+  line-height: 1.35;
 }
 .card-meaning {
   font-size: 12px;
   color: var(--t2);
-  margin-top: 5px;
-  line-height: 1.45;
+  margin-top: 4px;
+  line-height: 1.5;
 }
 .card-tags { display: flex; gap: 5px; margin-top: 6px; flex-wrap: wrap; }
 .tag-freq {
   font-size: 10px;
-  background: rgba(210,153,34,.15);
-  color: #e3b341;
+  background: rgba(200,148,43,.14);
+  color: #8A6414;
   padding: 1px 6px;
   border-radius: 4px;
   font-weight: 700;
@@ -142,7 +151,7 @@ body {
 .card-caret {
   color: var(--border);
   font-size: 12px;
-  padding-top: 4px;
+  padding-top: 6px;
   transition: transform .2s;
   flex-shrink: 0;
 }
@@ -150,7 +159,7 @@ body {
 
 .card-detail {
   display: none;
-  padding: 0 13px 13px 39px;
+  padding: 0 13px 13px 41px;
 }
 .card.open .card-detail { display: block; }
 
@@ -158,9 +167,9 @@ body {
 
 .ex-jp {
   font-size: 16px;
-  color: var(--tjp);
+  color: var(--t1);
   line-height: 1.8;
-  font-weight: 500;
+  font-weight: 600;
 }
 .ex-en {
   font-size: 12px;
@@ -171,15 +180,30 @@ body {
 }
 .card-note {
   margin-top: 10px;
-  padding: 8px 10px;
-  background: rgba(121,192,255,.07);
-  border-left: 2px solid rgba(121,192,255,.5);
-  border-radius: 0 6px 6px 0;
+  background: var(--tip-bg);
+  border-radius: 4px;
+  padding: 9px 11px;
   font-size: 12px;
-  color: var(--t2);
-  line-height: 1.6;
+  color: var(--t1);
+  line-height: 1.65;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
 }
-.card-note b { color: var(--t1); }
+.note-stamp {
+  font-family: var(--mincho);
+  font-weight: 800;
+  color: #fff;
+  background: var(--indigo);
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.note-text { flex: 1; }
+.card-note b { color: var(--shu); }
 .done-btn {
   float: right;
   background: none;
@@ -193,22 +217,23 @@ body {
   font-family: inherit;
   margin-bottom: 10px;
 }
-.done-btn.done { background: rgba(86,211,100,.08); color: var(--green); border-color: rgba(86,211,100,.4); }
+.done-btn.done { background: rgba(46,125,79,.08); color: var(--green); border-color: rgba(46,125,79,.4); }
 
 /* ── COMPARE SECTION ── */
 .cmp-block {
   background: var(--surface);
-  border-radius: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
   padding: 14px;
   margin-bottom: 10px;
 }
 .cmp-title {
-  font-size: 12px;
+  font-family: var(--mincho);
+  font-size: 13px;
   font-weight: 800;
-  color: var(--accent);
+  color: var(--indigo);
   margin-bottom: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
 }
 .cmp-table { width: 100%; border-collapse: collapse; }
 .cmp-table th {
@@ -223,19 +248,19 @@ body {
 .cmp-table td {
   font-size: 13px;
   color: var(--t1);
-  padding: 5px 6px 5px 0;
-  border-top: 1px solid var(--border);
+  padding: 6px 6px 6px 0;
+  border-top: 1px dashed var(--border);
   vertical-align: top;
-  line-height: 1.5;
+  line-height: 1.55;
 }
-.cmp-table td:first-child { color: var(--tjp); font-weight: 700; white-space: nowrap; }
+.cmp-table td:first-child { color: var(--indigo); font-weight: 700; white-space: nowrap; }
 .cmp-ex { font-size: 12px; color: var(--t2); display: block; margin-top: 2px; }
 .cmp-vs { text-align: center; color: var(--t2); font-size: 11px; padding: 6px 0; }
 .scale-wrap { display: flex; align-items: center; gap: 0; margin: 8px 0 4px; overflow-x: auto; }
 .scale-item { text-align: center; flex: 1; min-width: 60px; }
-.scale-pat { font-size: 11px; font-weight: 700; color: var(--tjp); }
+.scale-pat { font-size: 11px; font-weight: 700; color: var(--indigo); }
 .scale-desc { font-size: 10px; color: var(--t2); margin-top: 2px; }
-.scale-arr { color: var(--border); padding: 0 2px; font-size: 12px; flex-shrink: 0; }
+.scale-arr { color: var(--shu); padding: 0 2px; font-size: 12px; flex-shrink: 0; }
 .scale-label { display: flex; justify-content: space-between; font-size: 10px; color: var(--t2); margin-top: 6px; }
 
 /* ── NAV ── */
@@ -244,22 +269,19 @@ body {
   bottom: 0; left: 0; right: 0;
   max-width: 480px;
   margin: 0 auto;
-  background: rgba(13,17,23,.97);
+  background: rgba(246,244,238,.97);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--border);
   padding: 8px 8px env(safe-area-inset-bottom, 8px);
   display: flex;
   gap: 4px;
-  overflow-x: auto;
-  scrollbar-width: none;
   z-index: 50;
 }
-#nav::-webkit-scrollbar { display: none; }
 .ntab {
-  flex-shrink: 0;
-  padding: 7px 14px;
-  border-radius: 10px;
+  flex: 1;
+  padding: 8px 4px;
+  border-radius: 8px;
   cursor: pointer;
   color: var(--t2);
   border: 1px solid transparent;
@@ -273,17 +295,49 @@ body {
   gap: 3px;
 }
 .ntab-day {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  opacity: 0.65;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--shu);
 }
 .ntab-name {
   font-size: 12px;
   font-weight: 800;
 }
-.ntab.active { color: #0d1117; }
-.ntab.active .ntab-day { opacity: 0.6; }
+.ntab.active { background: var(--indigo); color: #fff; }
+.ntab.active .ntab-day { color: rgba(255,255,255,.75); }
+
+/* ── RUBY (furigana) ── */
+ruby { ruby-position: over; }
+rt { font-size: 0.5em; color: var(--t2); font-weight: 500; }
+body.hide-ruby rt { display: none; }
+.ex-jp, .st-ex-jp { line-height: 2.1; }
+.card-pattern { line-height: 1.75; }
+.st-pattern { line-height: 1.6; }
+.cmp-table td { line-height: 1.95; }
+
+/* ── CHIPS (sub-category picker) ── */
+.chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scrollbar-width: none;
+}
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--t2);
+  padding: 5px 12px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+}
+.chip.active { color: #fff; border-color: transparent; }
 
 /* ── STUDY OVERLAY ── */
 #study {
@@ -303,10 +357,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 3px double var(--indigo);
   flex-shrink: 0;
 }
-.st-info { font-size: 13px; color: var(--t1); font-weight: 700; }
+.st-info { font-family: var(--mincho); font-size: 13px; color: var(--indigo); font-weight: 800; }
 .st-sub { font-size: 11px; color: var(--t2); margin-top: 1px; }
 .st-close {
   background: none; border: none;
@@ -315,7 +369,7 @@ body {
 }
 .st-prog-wrap { padding: 0 16px 10px; flex-shrink: 0; }
 .st-prog { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 10px; }
-.st-prog-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .3s; }
+.st-prog-fill { height: 100%; background: var(--shu); border-radius: 2px; transition: width .3s; }
 
 .st-body {
   flex: 1;
@@ -344,7 +398,8 @@ body {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   background: var(--surface);
-  border-radius: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
   padding: 28px 22px;
   display: flex;
   flex-direction: column;
@@ -352,13 +407,13 @@ body {
 }
 .st-back { transform: rotateY(180deg); }
 
-.st-card-id { font-size: 11px; color: var(--t2); margin-bottom: 8px; }
-.st-pattern { font-size: 30px; font-weight: 900; color: var(--tjp); line-height: 1.25; }
+.st-card-id { font-size: 11px; color: var(--shu); font-weight: 700; margin-bottom: 8px; }
+.st-pattern { font-family: var(--mincho); font-size: 28px; font-weight: 800; color: var(--indigo); line-height: 1.3; }
 .st-meaning { font-size: 15px; color: var(--t2); margin-top: 10px; line-height: 1.5; }
 .st-hint { font-size: 11px; color: var(--border); margin-top: 18px; }
-.st-ex-jp { font-size: 17px; color: var(--tjp); line-height: 1.8; font-weight: 600; }
+.st-ex-jp { font-size: 17px; color: var(--t1); line-height: 1.8; font-weight: 600; }
 .st-ex-en { font-size: 12px; color: var(--t2); margin-top: 5px; font-style: italic; line-height: 1.5; }
-.st-note { margin-top: 12px; font-size: 11px; color: var(--t2); background: rgba(255,255,255,.04); border-radius: 6px; padding: 8px 10px; line-height: 1.6; }
+.st-note { margin-top: 12px; font-size: 11px; color: var(--t1); background: var(--tip-bg); border-radius: 6px; padding: 8px 10px; line-height: 1.6; }
 
 .st-actions {
   display: flex;
@@ -367,12 +422,13 @@ body {
   flex-shrink: 0;
 }
 .st-again, .st-good {
-  flex: 1; padding: 15px; border-radius: 12px;
-  border: none; font-size: 14px; font-weight: 800;
+  flex: 1; padding: 15px; border-radius: 10px;
+  border: 1px solid var(--border); font-size: 14px; font-weight: 800;
   cursor: pointer; font-family: inherit;
+  background: var(--surface);
 }
-.st-again { background: rgba(248,81,73,.12); color: var(--red); }
-.st-good  { background: rgba(86,211,100,.12); color: var(--green); }
+.st-again { color: var(--red); border-color: rgba(192,65,59,.4); }
+.st-good  { color: #fff; background: var(--indigo); border-color: var(--indigo); }
 .st-done-msg {
   text-align: center;
   padding: 20px;
@@ -386,10 +442,11 @@ body {
 
 <div id="header">
   <div class="h-left">
-    <div class="h-title">N2 文法</div>
+    <div class="h-title">N2 文法・聴解</div>
     <div class="h-sub" id="h-sub">Loading…</div>
   </div>
   <div class="h-right">
+    <button class="hbtn on" id="ruby-btn" onclick="toggleRuby()">ふり</button>
     <button class="hbtn" id="freq-btn" onclick="toggleFreq()">⚠️ Only</button>
     <button class="hbtn" id="size-btn" onclick="cycleSize()">A</button>
     <button class="hbtn study-btn" onclick="openStudy()">Study</button>
@@ -434,394 +491,813 @@ body {
 // ─────────────────────────────────────────────
 const CLUSTERS = [
 {
-  id:'A', name:'わけ Family', color:'#79c0ff',
+  id:'A', name:'わけ Family', color:'#25406E', cat:'文法',
+  desc:'わけ的四種變化：解釋原因、部分否定、斷言不可能、情理上不能做。',
   patterns:[
     { id:'A1', pat:'～わけだ', mean:'so naturally… / that explains it', freq:true,
-      jp:'毎日10時間勉強してたんだ。合格するわけだ。',
+      jp:'<ruby>毎日<rt>まいにち</rt></ruby>10<ruby>時間<rt>じかん</rt></ruby><ruby>勉強<rt>べんきょう</rt></ruby>してたんだ。<ruby>合格<rt>ごうかく</rt></ruby>するわけだ。',
       en:'"So you were studying 10 hours a day. No wonder you passed."',
       note:'Use when you just learned info that explains an already-visible result.' },
     { id:'A2', pat:'～わけではない', mean:"it's not that… (partial denial)", freq:true,
-      jp:'嫌いなわけではないけど、好きでもない。',
+      jp:'<ruby>嫌<rt>きら</rt></ruby>いなわけではないけど、<ruby>好<rt>す</rt></ruby>きでもない。',
       en:'"It\'s not that I dislike it — I just don\'t love it either."',
       note:'Soften a statement. Not a total denial — something in between.' },
     { id:'A3', pat:'～わけがない', mean:"there's no way / impossible", freq:true,
-      jp:'彼があんなひどいことをするわけがない。',
+      jp:'<ruby>彼<rt>かれ</rt></ruby>があんなひどいことをするわけがない。',
       en:'"There\'s no way he\'d do something that terrible."',
       note:'Conviction of impossibility. Stronger than 「はずがない」.' },
     { id:'A4', pat:'～わけにはいかない', mean:"can't (social/moral block)", freq:true,
-      jp:'友達との約束を断るわけにはいかない。',
+      jp:'<ruby>友達<rt>ともだち</rt></ruby>との<ruby>約束<rt>やくそく</rt></ruby>を<ruby>断<rt>ことわ</rt></ruby>るわけにはいかない。',
       en:'"I can\'t back out on a promise to a friend."',
       note:'Something feels morally/socially wrong to do. Always about obligation.' },
     { id:'A5', pat:'～ないわけにはいかない', mean:"have no choice but to / can't not do", freq:true,
-      jp:'お世話になった人の葬式に行かないわけにはいかない。',
+      jp:'お<ruby>世話<rt>せわ</rt></ruby>になった<ruby>人<rt>ひと</rt></ruby>の<ruby>葬式<rt>そうしき</rt></ruby>に<ruby>行<rt>い</rt></ruby>かないわけにはいかない。',
       en:'"I have no choice but to go to the funeral of someone who looked after me."',
       note:'Double negative = unavoidable obligation. Opposite feel from A4.' },
     { id:'A6', pat:'～わけにもいかない', mean:"can't very well do (awkward)", freq:false,
-      jp:'上司に「あなたは間違っています」とは言うわけにもいかない。',
+      jp:'<ruby>上司<rt>じょうし</rt></ruby>に「あなたは<ruby>間違<rt>まちが</rt></ruby>っています」とは<ruby>言<rt>い</rt></ruby>うわけにもいかない。',
       en:'"I can\'t very well tell my boss you\'re wrong."',
       note:'Similar to A4 but softer — socially awkward rather than morally wrong.' },
   ]
 },
 {
-  id:'B', name:'もの Advanced', color:'#56d364',
+  id:'B', name:'もの Advanced', color:'#4A7A54', cat:'文法',
+  desc:'もの系進階：逆接、委婉藉口、感嘆、強烈拒絕。',
   patterns:[
     { id:'B1', pat:'～ものの', mean:'although / granted that (but reality differs)', freq:true,
-      jp:'努力したものの、結果は出なかった。',
+      jp:'<ruby>努力<rt>どりょく</rt></ruby>したものの、<ruby>結果<rt>けっか</rt></ruby>は<ruby>出<rt>で</rt></ruby>なかった。',
       en:'"Although I made every effort, results didn\'t come."',
       note:'More formal and resigned than のに. Acknowledges reality without blame.' },
     { id:'B2', pat:'～ものだから', mean:'because (soft explanation / apologetic)', freq:false,
-      jp:'急に子供が熱を出したものだから、遅刻してしまいました。',
+      jp:'<ruby>急<rt>きゅう</rt></ruby>に<ruby>子供<rt>こども</rt></ruby>が<ruby>熱<rt>ねつ</rt></ruby>を<ruby>出<rt>だ</rt></ruby>したものだから、<ruby>遅刻<rt>ちこく</rt></ruby>してしまいました。',
       en:'"Because my child suddenly had a fever, I ended up being late."',
       note:'Soft excuse-tone. Implies the cause was out of your control.' },
     { id:'B3', pat:'～ものがある', mean:'there is something (intangible quality) about…', freq:false,
-      jp:'彼の言葉には人を動かすものがある。',
+      jp:'<ruby>彼<rt>かれ</rt></ruby>の<ruby>言葉<rt>ことば</rt></ruby>には<ruby>人<rt>ひと</rt></ruby>を<ruby>動<rt>うご</rt></ruby>かすものがある。',
       en:'"There\'s something in his words that moves people."',
       note:'Expresses an ineffable, hard-to-describe quality you feel.' },
     { id:'B4', pat:'～ものか', mean:"as if I would! / no way! (strong refusal)", freq:false,
-      jp:'あんな人に謝るものか！',
+      jp:'あんな<ruby>人<rt>ひと</rt></ruby>に<ruby>謝<rt>あやま</rt></ruby>るものか！',
       en:'"As if I\'d apologize to someone like that!"',
       note:'Strong internal refusal. Often said to oneself.' },
     { id:'B5', pat:'～というものだ', mean:"that's the true nature of X / that's what X really is", freq:false,
-      jp:'人に頼らず自分でやってこそ、本当の成長というものだ。',
+      jp:'<ruby>人<rt>ひと</rt></ruby>に<ruby>頼<rt>たよ</rt></ruby>らず<ruby>自分<rt>じぶん</rt></ruby>でやってこそ、<ruby>本当<rt>ほんとう</rt></ruby>の<ruby>成長<rt>せいちょう</rt></ruby>というものだ。',
       en:'"Only when you do it yourself — that\'s true growth."',
       note:'Defines the essence of something. Wise/philosophical tone.' },
     { id:'B6', pat:'～というものではない', mean:"it's not simply that…", freq:true,
-      jp:'謝ればいいというものではない。',
+      jp:'<ruby>謝<rt>あやま</rt></ruby>ればいいというものではない。',
       en:'"It\'s not simply a matter of just apologizing."',
       note:'Pushes back on an oversimplified view.' },
   ]
 },
 {
-  id:'C', name:'Formal Markers', color:'#e3b341',
+  id:'C', name:'Formal Markers', color:'#C8942B', cat:'文法',
+  desc:'書面語標記：において、によって、をきっかけに等閱讀高頻句型。',
   patterns:[
     { id:'C1', pat:'～において / における', mean:'in / at (formal context)', freq:true,
-      jp:'現代社会において、情報リテラシーは不可欠だ。',
+      jp:'<ruby>現代<rt>げんだい</rt></ruby><ruby>社会<rt>しゃかい</rt></ruby>において、<ruby>情報<rt>じょうほう</rt></ruby>リテラシーは<ruby>不可欠<rt>ふかけつ</rt></ruby>だ。',
       en:'"In modern society, information literacy is indispensable."',
       note:'における = noun modifier form: 現代社会における問題 (problems in modern society).' },
-    { id:'C2', pat:'～に関して / に関する', mean:'regarding / concerning (formal)', freq:false,
-      jp:'この件に関して、調査中です。',
+    { id:'C2', pat:'～に<ruby>関<rt>かん</rt></ruby>して / に<ruby>関<rt>かん</rt></ruby>する', mean:'regarding / concerning (formal)', freq:false,
+      jp:'この<ruby>件<rt>けん</rt></ruby>に<ruby>関<rt>かん</rt></ruby>して、<ruby>調査中<rt>ちょうさちゅう</rt></ruby>です。',
       en:'"We are currently investigating regarding this matter."',
       note:'に関する = noun modifier. More formal than について.' },
-    { id:'C3', pat:'～に対して / に対する', mean:'toward / against / in contrast to', freq:true,
-      jp:'彼は私に対してずっと冷たい。 ／ 去年に対して売上が増えた。',
+    { id:'C3', pat:'～に<ruby>対<rt>たい</rt></ruby>して / に<ruby>対<rt>たい</rt></ruby>する', mean:'toward / against / in contrast to', freq:true,
+      jp:'<ruby>彼<rt>かれ</rt></ruby>は<ruby>私<rt>わたし</rt></ruby>に<ruby>対<rt>たい</rt></ruby>してずっと<ruby>冷<rt>つめ</rt></ruby>たい。 ／ <ruby>去年<rt>きょねん</rt></ruby>に<ruby>対<rt>たい</rt></ruby>して<ruby>売上<rt>うりあげ</rt></ruby>が<ruby>増<rt>ふ</rt></ruby>えた。',
       en:'"He\'s been cold toward me." / "Sales grew compared to last year."',
       note:'Two meanings: ① directed at someone  ② compared to (contrast).' },
     { id:'C4', pat:'～によって / による', mean:'by / due to / depending on', freq:true,
-      jp:'文化によって、マナーが違う。地震による被害が大きかった。',
+      jp:'<ruby>文化<rt>ぶんか</rt></ruby>によって、マナーが<ruby>違<rt>ちが</rt></ruby>う。<ruby>地震<rt>じしん</rt></ruby>による<ruby>被害<rt>ひがい</rt></ruby>が<ruby>大<rt>おお</rt></ruby>きかった。',
       en:'"Manners differ depending on culture." / "Damage due to the earthquake was large."',
       note:'Three readings: ① depends on  ② by means of  ③ due to (cause).' },
     { id:'C5', pat:'～として / としては', mean:'as / in the capacity of', freq:true,
-      jp:'医者として、正直に言います。',
+      jp:'<ruby>医者<rt>いしゃ</rt></ruby>として、<ruby>正直<rt>しょうじき</rt></ruby>に<ruby>言<rt>い</rt></ruby>います。',
       en:'"As a doctor, I\'ll be honest with you."',
       note:'としては = from the standpoint of. としても = even as.' },
     { id:'C6', pat:'～をめぐって / をめぐる', mean:'surrounding / over (a controversy)', freq:false,
-      jp:'その政策をめぐって激しい議論が起きた。',
+      jp:'その<ruby>政策<rt>せいさく</rt></ruby>をめぐって<ruby>激<rt>はげ</rt></ruby>しい<ruby>議論<rt>ぎろん</rt></ruby>が<ruby>起<rt>お</rt></ruby>きた。',
       en:'"Fierce debate erupted surrounding that policy."',
       note:'Always involves debate, conflict, or disputed topic.' },
     { id:'C7', pat:'～をもとに / をもとにした', mean:'based on', freq:false,
-      jp:'実話をもとにした映画です。',
+      jp:'<ruby>実話<rt>じつわ</rt></ruby>をもとにした<ruby>映画<rt>えいが</rt></ruby>です。',
       en:'"It\'s a film based on a true story."',
       note:'More creative/interpretive than に基づいて.' },
-    { id:'C8', pat:'～を通して / を通じて', mean:'through / throughout / via', freq:false,
-      jp:'音楽を通して、世界とつながれる。',
+    { id:'C8', pat:'～を<ruby>通<rt>とお</rt></ruby>して / を<ruby>通<rt>つう</rt></ruby>じて', mean:'through / throughout / via', freq:false,
+      jp:'<ruby>音楽<rt>おんがく</rt></ruby>を<ruby>通<rt>とお</rt></ruby>して、<ruby>世界<rt>せかい</rt></ruby>とつながれる。',
       en:'"Through music, you can connect with the world."',
       note:'通して = means/medium. 通じて = channel/intermediary (interchangeable).' },
-    { id:'C9', pat:'～に沿って / に沿った', mean:'along / in line with / in accordance with', freq:false,
-      jp:'方針に沿って進めてください。',
+    { id:'C9', pat:'～に<ruby>沿<rt>そ</rt></ruby>って / に<ruby>沿<rt>そ</rt></ruby>った', mean:'along / in line with / in accordance with', freq:false,
+      jp:'<ruby>方針<rt>ほうしん</rt></ruby>に<ruby>沿<rt>そ</rt></ruby>って<ruby>進<rt>すす</rt></ruby>めてください。',
       en:'"Please proceed in line with the policy."',
       note:'Physical (沿って道を歩く) or abstract (rules/plans) use.' },
-    { id:'C10', pat:'～に基づいて / に基づく', mean:'based on / grounded in', freq:true,
-      jp:'データに基づいた判断が重要だ。',
+    { id:'C10', pat:'～に<ruby>基<rt>もと</rt></ruby>づいて / に<ruby>基<rt>もと</rt></ruby>づく', mean:'based on / grounded in', freq:true,
+      jp:'データに<ruby>基<rt>もと</rt></ruby>づいた<ruby>判断<rt>はんだん</rt></ruby>が<ruby>重要<rt>じゅうよう</rt></ruby>だ。',
       en:'"Judgments based on data are important."',
       note:'More factual/technical than をもとに. Often used in reports.' },
-    { id:'C11', pat:'～に反して / に反する', mean:'contrary to / against', freq:false,
-      jp:'予想に反して、試験は簡単だった。',
+    { id:'C11', pat:'～に<ruby>反<rt>はん</rt></ruby>して / に<ruby>反<rt>はん</rt></ruby>する', mean:'contrary to / against', freq:false,
+      jp:'<ruby>予想<rt>よそう</rt></ruby>に<ruby>反<rt>はん</rt></ruby>して、<ruby>試験<rt>しけん</rt></ruby>は<ruby>簡単<rt>かんたん</rt></ruby>だった。',
       en:'"Contrary to expectations, the exam was easy."',
       note:'The result goes against what was expected or desired.' },
-    { id:'C12', pat:'～に応じて / に応じた', mean:'according to / in response to', freq:true,
-      jp:'状況に応じて判断してください。',
+    { id:'C12', pat:'～に<ruby>応<rt>おう</rt></ruby>じて / に<ruby>応<rt>おう</rt></ruby>じた', mean:'according to / in response to', freq:true,
+      jp:'<ruby>状況<rt>じょうきょう</rt></ruby>に<ruby>応<rt>おう</rt></ruby>じて<ruby>判断<rt>はんだん</rt></ruby>してください。',
       en:'"Please make judgments according to the situation."',
       note:'Implies flexible adjustment to match the condition.' },
-    { id:'C13', pat:'～に従って / に従う', mean:'following / as X progresses Y changes', freq:true,
-      jp:'時間が経つに従って、痛みが引いた。　規則に従って行動する。',
+    { id:'C13', pat:'～に<ruby>従<rt>したが</rt></ruby>って / に<ruby>従<rt>したが</rt></ruby>う', mean:'following / as X progresses Y changes', freq:true,
+      jp:'<ruby>時間<rt>じかん</rt></ruby>が<ruby>経<rt>た</rt></ruby>つに<ruby>従<rt>したが</rt></ruby>って、<ruby>痛<rt>いた</rt></ruby>みが<ruby>引<rt>ひ</rt></ruby>いた。　<ruby>規則<rt>きそく</rt></ruby>に<ruby>従<rt>したが</rt></ruby>って<ruby>行動<rt>こうどう</rt></ruby>する。',
       en:'"As time passed, the pain subsided." / "Act following the rules."',
       note:'⚠️ Two meanings: ① progressive change over time  ② obeying a rule.' },
     { id:'C14', pat:'～にわたって / にわたる', mean:'spanning / over (range or area)', freq:false,
-      jp:'3時間にわたる会議だった。',
+      jp:'3<ruby>時間<rt>じかん</rt></ruby>にわたる<ruby>会議<rt>かいぎ</rt></ruby>だった。',
       en:'"It was a meeting spanning 3 hours."',
       note:'Used for time spans or geographical areas: 全国にわたる.' },
     { id:'C15', pat:'～にあたって / にあたり', mean:'on the occasion of (milestone event)', freq:true,
-      jp:'卒業にあたって、一言お礼を述べます。',
+      jp:'<ruby>卒業<rt>そつぎょう</rt></ruby>にあたって、<ruby>一言<rt>ひとこと</rt></ruby>お<ruby>礼<rt>れい</rt></ruby>を<ruby>述<rt>の</rt></ruby>べます。',
       en:'"On the occasion of graduation, I\'d like to say a word of thanks."',
       note:'Only for significant non-routine events: ceremonies, new beginnings.' },
-    { id:'C16', pat:'～に先立って / に先立ち', mean:'prior to / before (something begins)', freq:false,
-      jp:'式典に先立って、リハーサルを行います。',
+    { id:'C16', pat:'～に<ruby>先立<rt>さきだ</rt></ruby>って / に<ruby>先立<rt>さきだ</rt></ruby>ち', mean:'prior to / before (something begins)', freq:false,
+      jp:'<ruby>式典<rt>しきてん</rt></ruby>に<ruby>先立<rt>さきだ</rt></ruby>って、リハーサルを<ruby>行<rt>おこな</rt></ruby>います。',
       en:'"Prior to the ceremony, we will hold a rehearsal."',
       note:'Formal. The action in に先立って prepares for or precedes the main event.' },
     { id:'C17', pat:'～をきっかけに', mean:'triggered by / using X as an opportunity', freq:true,
-      jp:'病気をきっかけに、生活習慣を見直した。',
+      jp:'<ruby>病気<rt>びょうき</rt></ruby>をきっかけに、<ruby>生活<rt>せいかつ</rt></ruby><ruby>習慣<rt>しゅうかん</rt></ruby>を<ruby>見直<rt>みなお</rt></ruby>した。',
       en:'"Using my illness as a trigger, I reconsidered my lifestyle."',
       note:'The trigger caused a positive change in direction.' },
-    { id:'C18', pat:'～を契機に (けいきに)', mean:'as a turning point / with X as impetus', freq:false,
-      jp:'リーマンショックを契機に、働き方が変わった。',
+    { id:'C18', pat:'～を<ruby>契機<rt>けいき</rt></ruby>に (けいきに)', mean:'as a turning point / with X as impetus', freq:false,
+      jp:'リーマンショックを<ruby>契機<rt>けいき</rt></ruby>に、<ruby>働<rt>はたら</rt></ruby>き<ruby>方<rt>かた</rt></ruby>が<ruby>変<rt>か</rt></ruby>わった。',
       en:'"With the Lehman shock as a turning point, how people work changed."',
       note:'More formal and dramatic than をきっかけに. Used in news/essays.' },
   ]
 },
 {
-  id:'D', name:'Limit & Restrict', color:'#f85149',
+  id:'D', name:'Limit & Restrict', color:'#C0413B', cat:'文法',
+  desc:'限定與範圍：に限って、はともかく、にかかわらず。',
   patterns:[
-    { id:'D1', pat:'～に限らず', mean:'not limited to / not only', freq:false,
-      jp:'大人に限らず、子供も楽しめる映画だ。',
+    { id:'D1', pat:'～に<ruby>限<rt>かぎ</rt></ruby>らず', mean:'not limited to / not only', freq:false,
+      jp:'<ruby>大人<rt>おとな</rt></ruby>に<ruby>限<rt>かぎ</rt></ruby>らず、<ruby>子供<rt>こども</rt></ruby>も<ruby>楽<rt>たの</rt></ruby>しめる<ruby>映画<rt>えいが</rt></ruby>だ。',
       en:'"Not just adults — even children can enjoy this movie."',
       note:'Widens scope: X はもちろん、それ以外も.' },
-    { id:'D2', pat:'～に限って', mean:'only/of all people or times (ironic)', freq:true,
-      jp:'急いでいる時に限って、信号が赤になる。',
+    { id:'D2', pat:'～に<ruby>限<rt>かぎ</rt></ruby>って', mean:'only/of all people or times (ironic)', freq:true,
+      jp:'<ruby>急<rt>いそ</rt></ruby>いでいる<ruby>時<rt>とき</rt></ruby>に<ruby>限<rt>かぎ</rt></ruby>って、<ruby>信号<rt>しんごう</rt></ruby>が<ruby>赤<rt>あか</rt></ruby>になる。',
       en:'"Of all times, it\'s always when I\'m in a hurry that lights turn red."',
       note:'Strong ironic nuance: why now, of all times/people?!' },
-    { id:'D3', pat:'～に限る', mean:'nothing beats / X is the best', freq:false,
-      jp:'疲れた時は温泉に限る。',
+    { id:'D3', pat:'～に<ruby>限<rt>かぎ</rt></ruby>る', mean:'nothing beats / X is the best', freq:false,
+      jp:'<ruby>疲<rt>つか</rt></ruby>れた<ruby>時<rt>とき</rt></ruby>は<ruby>温泉<rt>おんせん</rt></ruby>に<ruby>限<rt>かぎ</rt></ruby>る。',
       en:'"When you\'re tired, nothing beats a hot spring."',
       note:'Expresses strong personal recommendation.' },
     { id:'D4', pat:'～はともかく', mean:'setting X aside / never mind X, but…', freq:true,
-      jp:'値段はともかく、デザインが気に入った。',
+      jp:'<ruby>値段<rt>ねだん</rt></ruby>はともかく、デザインが<ruby>気<rt>き</rt></ruby>に<ruby>入<rt>はい</rt></ruby>った。',
       en:'"Setting aside the price, I love the design."',
       note:'Acknowledges X but says it\'s not the point right now.' },
     { id:'D5', pat:'～はさておき', mean:'putting X aside (more decisive)', freq:false,
-      jp:'冗談はさておき、本題に入りましょう。',
+      jp:'<ruby>冗談<rt>じょうだん</rt></ruby>はさておき、<ruby>本題<rt>ほんだい</rt></ruby>に<ruby>入<rt>はい</rt></ruby>りましょう。',
       en:'"Jokes aside, let\'s get to the main topic."',
       note:'More decisive than はともかく. Often signals transition in speech.' },
     { id:'D6', pat:'～にかかわらず', mean:'regardless of', freq:true,
-      jp:'経験にかかわらず、誰でも応募できます。',
+      jp:'<ruby>経験<rt>けいけん</rt></ruby>にかかわらず、<ruby>誰<rt>だれ</rt></ruby>でも<ruby>応募<rt>おうぼ</rt></ruby>できます。',
       en:'"Regardless of experience, anyone can apply."',
       note:'Pair it with contrasting options: 天気にかかわらず (rain or shine).' },
     { id:'D7', pat:'～ないことには', mean:'unless / without (doing first, Y is impossible)', freq:true,
-      jp:'実際にやってみないことには、わからない。',
+      jp:'<ruby>実際<rt>じっさい</rt></ruby>にやってみないことには、わからない。',
       en:'"Unless you actually try it, you won\'t know."',
       note:'Strong conditional: X must happen first. Y is usually negative.' },
     { id:'D8', pat:'～ないことはない', mean:"it's not that I can't / possible, though…", freq:false,
-      jp:'行けないことはないけど、あまり気乗りしない。',
+      jp:'<ruby>行<rt>い</rt></ruby>けないことはないけど、あまり<ruby>気乗<rt>きの</rt></ruby>りしない。',
       en:'"It\'s not that I can\'t go, but I\'m not really feeling it."',
       note:'Double negative = reluctant possibility. Softens a refusal.' },
     { id:'D9', pat:'～ないまでも', mean:'even if not X, at least Y', freq:false,
-      jp:'毎日ではないまでも、週に3回は運動したい。',
+      jp:'<ruby>毎日<rt>まいにち</rt></ruby>ではないまでも、<ruby>週<rt>しゅう</rt></ruby>に3<ruby>回<rt>かい</rt></ruby>は<ruby>運動<rt>うんどう</rt></ruby>したい。',
       en:'"Even if not every day, I want to exercise at least 3 times a week."',
       note:'Sets a lower but acceptable bar when the ideal is not achievable.' },
   ]
 },
 {
-  id:'E', name:'Degree & Compare', color:'#bc8cff',
+  id:'E', name:'Degree & Compare', color:'#7A6AA8', cat:'文法',
+  desc:'程度與比較：だけあって／だけに／にしては 是必考三兄弟。',
   patterns:[
     { id:'E1', pat:'～だけあって', mean:'as expected of (result matches status)', freq:true,
-      jp:'さすが10年のベテランだけあって、仕事が速い。',
+      jp:'さすが10<ruby>年<rt>ねん</rt></ruby>のベテランだけあって、<ruby>仕事<rt>しごと</rt></ruby>が<ruby>速<rt>はや</rt></ruby>い。',
       en:'"As expected of a 10-year veteran — the work is fast."',
       note:'Positive: the quality/result matches the title/effort. Impressed tone.' },
     { id:'E2', pat:'～だけに', mean:'all the more because / precisely because', freq:true,
-      jp:'期待していただけに、裏切られた時のショックが大きかった。',
+      jp:'<ruby>期待<rt>きたい</rt></ruby>していただけに、<ruby>裏切<rt>うらぎ</rt></ruby>られた<ruby>時<rt>とき</rt></ruby>のショックが<ruby>大<rt>おお</rt></ruby>きかった。',
       en:'"Precisely because I had high hopes, the betrayal hit harder."',
       note:'Amplifies the result because of the cause. Can be positive or negative.' },
     { id:'E3', pat:'～だけましだ', mean:'at least it\'s better / be grateful that', freq:false,
-      jp:'怪我したけど、骨折しなかっただけましだ。',
+      jp:'<ruby>怪我<rt>けが</rt></ruby>したけど、<ruby>骨折<rt>こっせつ</rt></ruby>しなかっただけましだ。',
       en:'"I got hurt, but at least I didn\'t break anything — that\'s something."',
       note:'Consolation: it could have been worse.' },
     { id:'E4', pat:'～にしては', mean:'considering / for (result is unexpected)', freq:true,
-      jp:'3か月勉強したにしては、上手すぎる。',
+      jp:'3か<ruby>月<rt>か</rt></ruby><ruby>勉強<rt>べんきょう</rt></ruby>したにしては、<ruby>上手<rt>じょうず</rt></ruby>すぎる。',
       en:'"For someone who only studied 3 months, this is too good."',
       note:'Always implies: the result doesn\'t match the expected level (better OR worse).' },
     { id:'E5', pat:'～というより', mean:'rather than / more like', freq:false,
-      jp:'彼女は厳しいというより、情熱的なんだと思う。',
+      jp:'<ruby>彼女<rt>かのじょ</rt></ruby>は<ruby>厳<rt>きび</rt></ruby>しいというより、<ruby>情熱的<rt>じょうねつてき</rt></ruby>なんだと<ruby>思<rt>おも</rt></ruby>う。',
       en:'"Rather than strict, I think she\'s passionate."',
       note:'Reframes a description with a more accurate one.' },
     { id:'E6', pat:'～にしても / にしろ / にせよ', mean:'even if / whether…or / either way', freq:true,
-      jp:'賛成するにしても反対するにしても、理由を言ってください。',
+      jp:'<ruby>賛成<rt>さんせい</rt></ruby>するにしても<ruby>反対<rt>はんたい</rt></ruby>するにしても、<ruby>理由<rt>りゆう</rt></ruby>を<ruby>言<rt>い</rt></ruby>ってください。',
       en:'"Whether you agree or disagree, please state your reasons."',
       note:'Two uses: ① "even if X" ② "whether X or Y" — にしろ/にせよ more formal.' },
     { id:'E7', pat:'～としたら / とすれば', mean:'if we suppose / hypothetically if', freq:true,
-      jp:'彼が本当のことを言っているとしたら、問題は深刻だ。',
+      jp:'<ruby>彼<rt>かれ</rt></ruby>が<ruby>本当<rt>ほんとう</rt></ruby>のことを<ruby>言<rt>い</rt></ruby>っているとしたら、<ruby>問題<rt>もんだい</rt></ruby>は<ruby>深刻<rt>しんこく</rt></ruby>だ。',
       en:'"If what he\'s saying is true, then the problem is serious."',
       note:'More hypothetical/logical than たら. Speaker is reasoning from a premise.' },
     { id:'E8', pat:'～だからこそ', mean:'precisely because / the very reason', freq:true,
-      jp:'難しいからこそ、やりがいがある。',
+      jp:'<ruby>難<rt>むずか</rt></ruby>しいからこそ、やりがいがある。',
       en:'"Precisely because it\'s difficult, it\'s rewarding."',
       note:'こそ adds emphasis: the cause is specifically WHY Y is true.' },
     { id:'E9', pat:'～ないことはない', mean:'not entirely impossible (grudging yes)', freq:false,
-      jp:'努力すれば合格できないことはない。',
+      jp:'<ruby>努力<rt>どりょく</rt></ruby>すれば<ruby>合格<rt>ごうかく</rt></ruby>できないことはない。',
       en:'"It\'s not impossible to pass if you put in the effort."',
       note:'Weaker and more reluctant than できる. Double-negative softening.' },
   ]
 },
 {
-  id:'F', name:"Can't Help It", color:'#ffa657',
+  id:'F', name:"Can't Help It", color:'#C67A3B', cat:'文法',
+  desc:'「忍不住」系列：てならない、てたまらない、ずにはいられない。',
   patterns:[
     { id:'F1', pat:'～てならない', mean:"can't help feeling (deep emotional welling)", freq:true,
-      jp:'故郷が恋しくてならない。',
+      jp:'<ruby>故郷<rt>こきょう</rt></ruby>が<ruby>恋<rt>こい</rt></ruby>しくてならない。',
       en:'"I can\'t help but long for my hometown."',
       note:'Internal emotion that keeps welling up. Often nostalgia, worry, joy.' },
     { id:'F2', pat:'～てたまらない', mean:"unbearably / can't stand (strong sensation)", freq:true,
-      jp:'眠くてたまらない。',
+      jp:'<ruby>眠<rt>ねむ</rt></ruby>くてたまらない。',
       en:'"I\'m unbearably sleepy." (can\'t stand it)',
       note:'Physically or emotionally overwhelming. More intense than F3.' },
     { id:'F3', pat:'～てしょうがない / しかたがない', mean:"can't help it / stuck with it", freq:true,
-      jp:'あの映画が頭から離れてしょうがない。',
+      jp:'あの<ruby>映画<rt>えいが</rt></ruby>が<ruby>頭<rt>あたま</rt></ruby>から<ruby>離<rt>はな</rt></ruby>れてしょうがない。',
       en:'"I can\'t get that movie out of my head."',
       note:'Slightly resigned — you\'re just stuck with this feeling/situation.' },
     { id:'F4', pat:'～ずにはいられない', mean:'can\'t help but DO (action-oriented)', freq:true,
-      jp:'彼の話を聞いて笑わずにはいられなかった。',
+      jp:'<ruby>彼<rt>かれ</rt></ruby>の<ruby>話<rt>はなし</rt></ruby>を<ruby>聞<rt>き</rt></ruby>いて<ruby>笑<rt>わら</rt></ruby>わずにはいられなかった。',
       en:'"After hearing his story, I couldn\'t help but laugh."',
       note:'KEY DIFF from F1–F3: triggers an ACTION, not just a feeling.' },
     { id:'F5', pat:'～ないではいられない', mean:'can\'t help but (same as F4, softer)', freq:false,
-      jp:'不公平な扱いを見ると、怒らないではいられない。',
+      jp:'<ruby>不公平<rt>ふこうへい</rt></ruby>な<ruby>扱<rt>あつか</rt></ruby>いを<ruby>見<rt>み</rt></ruby>ると、<ruby>怒<rt>おこ</rt></ruby>らないではいられない。',
       en:'"When I see unfair treatment, I can\'t help but get angry."',
       note:'More literary/written than ずにはいられない.' },
     { id:'F6', pat:'～ようがない / ようもない', mean:'there is no way to / impossible to', freq:true,
-      jp:'連絡先も知らないし、探しようがない。',
+      jp:'<ruby>連絡先<rt>れんらくさき</rt></ruby>も<ruby>知<rt>し</rt></ruby>らないし、<ruby>探<rt>さが</rt></ruby>しようがない。',
       en:'"I don\'t even know their contact info — there\'s no way to look."',
       note:'The means or method simply doesn\'t exist.' },
     { id:'F7', pat:'～てはいられない', mean:"can't afford to be doing (urgency)", freq:false,
-      jp:'こんなところで遊んではいられない。',
+      jp:'こんなところで<ruby>遊<rt>あそ</rt></ruby>んではいられない。',
       en:'"I can\'t afford to be playing around in a place like this."',
       note:'Urgency forces you to stop the current action.' },
   ]
 },
 {
-  id:'G', name:'という Structures', color:'#39d353',
+  id:'G', name:'という Structures', color:'#2F6E5A', cat:'文法',
+  desc:'という結構：定義、傳聞、邏輯推論。',
   patterns:[
     { id:'G1', pat:'～といっても', mean:"even though I say X, it's not extreme", freq:true,
-      jp:'海外経験があるといっても、観光で行っただけです。',
+      jp:'<ruby>海外<rt>かいがい</rt></ruby><ruby>経験<rt>けいけん</rt></ruby>があるといっても、<ruby>観光<rt>かんこう</rt></ruby>で<ruby>行<rt>い</rt></ruby>っただけです。',
       en:'"Even though I said I have overseas experience, I only went as a tourist."',
       note:'Downgrades your own statement. Prevents misinterpretation.' },
     { id:'G2', pat:'～といえば', mean:'speaking of / when you say X, I think of', freq:false,
-      jp:'京都といえば、金閣寺だよね。',
+      jp:'<ruby>京都<rt>きょうと</rt></ruby>といえば、<ruby>金閣寺<rt>きんかくじ</rt></ruby>だよね。',
       en:'"When you say Kyoto, you think of Kinkaku-ji."',
       note:'Association trigger. Used to introduce related topics.' },
     { id:'G3', pat:'～というのは', mean:'the thing called X is / X means', freq:false,
-      jp:'「根性」というのは、つらくても諦めない精神のことだ。',
+      jp:'「<ruby>根性<rt>こんじょう</rt></ruby>」というのは、つらくても<ruby>諦<rt>あきら</rt></ruby>めない<ruby>精神<rt>せいしん</rt></ruby>のことだ。',
       en:'"What is called \'grit\' is the spirit of not giving up even when it\'s hard."',
       note:'Defines or explains a term, concept, or word.' },
     { id:'G4', pat:'～ということだ', mean:'I heard that / it means that (reported)', freq:true,
-      jp:'社長が辞めるということだ。',
+      jp:'<ruby>社長<rt>しゃちょう</rt></ruby>が<ruby>辞<rt>や</rt></ruby>めるということだ。',
       en:'"I hear that the president is resigning."',
       note:'Softer hearsay marker than らしい or そうだ.' },
     { id:'G5', pat:'～ということは', mean:'which means / if that\'s the case then', freq:true,
-      jp:'彼が来ないということは、何かあったんだろう。',
+      jp:'<ruby>彼<rt>かれ</rt></ruby>が<ruby>来<rt>こ</rt></ruby>ないということは、<ruby>何<rt>なに</rt></ruby>かあったんだろう。',
       en:'"Which means something must have come up for him."',
       note:'Logical inference drawn from new information.' },
   ]
 },
 {
-  id:'H', name:'Formal Time', color:'#79c0ff',
+  id:'H', name:'Formal Time', color:'#3A6E75', cat:'文法',
+  desc:'正式時間表現：次第、途端、うちに。注意次第的兩種意思。',
   patterns:[
-    { id:'H1', pat:'～次第 (しだい)', mean:'as soon as (formal, often future)', freq:true,
-      jp:'準備でき次第、お知らせします。',
+    { id:'H1', pat:'～<ruby>次第<rt>しだい</rt></ruby> (しだい)', mean:'as soon as (formal, often future)', freq:true,
+      jp:'<ruby>準備<rt>じゅんび</rt></ruby>でき<ruby>次第<rt>しだい</rt></ruby>、お<ruby>知<rt>し</rt></ruby>らせします。',
       en:'"As soon as preparations are complete, I\'ll let you know."',
       note:'Always formal; implies immediate action when condition is met.' },
-    { id:'H2', pat:'～次第で / 次第だ', mean:'depending on / it all depends on', freq:true,
-      jp:'やる気次第で、結果は変わる。',
+    { id:'H2', pat:'～<ruby>次第<rt>しだい</rt></ruby>で / <ruby>次第<rt>しだい</rt></ruby>だ', mean:'depending on / it all depends on', freq:true,
+      jp:'やる<ruby>気<rt>き</rt></ruby><ruby>次第<rt>しだい</rt></ruby>で、<ruby>結果<rt>けっか</rt></ruby>は<ruby>変<rt>か</rt></ruby>わる。',
       en:'"Results change depending on motivation."',
       note:'Different from H1! This means "contingent on" not "as soon as".' },
-    { id:'H3', pat:'～た途端に (とたんに)', mean:'the very instant / the moment', freq:true,
-      jp:'外に出た途端に、雨が降り出した。',
+    { id:'H3', pat:'～た<ruby>途端<rt>とたん</rt></ruby>に (とたんに)', mean:'the very instant / the moment', freq:true,
+      jp:'<ruby>外<rt>そと</rt></ruby>に<ruby>出<rt>で</rt></ruby>た<ruby>途端<rt>とたん</rt></ruby>に、<ruby>雨<rt>あめ</rt></ruby>が<ruby>降<rt>ふ</rt></ruby>り<ruby>出<rt>だ</rt></ruby>した。',
       en:'"The very moment I stepped outside, it started raining."',
       note:'Emphasizes instantaneous surprise. Y happens immediately after X.' },
     { id:'H4', pat:'～うちに', mean:'while / before the situation changes', freq:true,
-      jp:'若いうちに、いろんな経験をしておくべきだ。',
+      jp:'<ruby>若<rt>わか</rt></ruby>いうちに、いろんな<ruby>経験<rt>けいけん</rt></ruby>をしておくべきだ。',
       en:'"While you\'re young, you should accumulate various experiences."',
       note:'The window will close — do Y before the state X ends.' },
     { id:'H5', pat:'～ないうちに', mean:'before X happens (do Y first)', freq:false,
-      jp:'忘れないうちに、メモしておいた。',
+      jp:'<ruby>忘<rt>わす</rt></ruby>れないうちに、メモしておいた。',
       en:'"Before I forgot, I made a note of it."',
       note:'Y is done proactively before the negative state kicks in.' },
     { id:'H6', pat:'～にあたって / にあたり', mean:'on the occasion of (major milestone)', freq:true,
-      jp:'入社にあたって、心がけていることがあります。',
+      jp:'<ruby>入社<rt>にゅうしゃ</rt></ruby>にあたって、<ruby>心<rt>こころ</rt></ruby>がけていることがあります。',
       en:'"On the occasion of joining the company, there are things I keep in mind."',
       note:'Only for significant, non-routine events: ceremonies, new beginnings.' },
-    { id:'H7', pat:'～に先立って / に先立ち', mean:'prior to / before X begins (formal)', freq:false,
-      jp:'手術に先立って、説明を行います。',
+    { id:'H7', pat:'～に<ruby>先立<rt>さきだ</rt></ruby>って / に<ruby>先立<rt>さきだ</rt></ruby>ち', mean:'prior to / before X begins (formal)', freq:false,
+      jp:'<ruby>手術<rt>しゅじゅつ</rt></ruby>に<ruby>先立<rt>さきだ</rt></ruby>って、<ruby>説明<rt>せつめい</rt></ruby>を<ruby>行<rt>おこな</rt></ruby>います。',
       en:'"Prior to the surgery, we will give an explanation."',
       note:'Formal. The action prepares for or precedes the main event.' },
   ]
 },
 {
-  id:'I', name:'Cause & Contrast', color:'#ffa657',
+  id:'I', name:'Cause & Contrast', color:'#A85A4A', cat:'文法',
+  desc:'原因與對比：ことから、とともに、に比べて。',
   patterns:[
     { id:'I1', pat:'～ことから', mean:'from the fact that / because (reasoning)', freq:true,
-      jp:'葉が黄色くなっていることから、秋が近いとわかる。',
+      jp:'<ruby>葉<rt>は</rt></ruby>が<ruby>黄色<rt>きいろ</rt></ruby>くなっていることから、<ruby>秋<rt>あき</rt></ruby>が<ruby>近<rt>ちか</rt></ruby>いとわかる。',
       en:'"From the fact that leaves are turning yellow, we can tell autumn is near."',
       note:'The reason is observed evidence used to draw a conclusion.' },
     { id:'I2', pat:'～ことで', mean:'by doing / through the act of', freq:false,
-      jp:'日記をつけることで、自分の気持ちを整理できる。',
+      jp:'<ruby>日記<rt>にっき</rt></ruby>をつけることで、<ruby>自分<rt>じぶん</rt></ruby>の<ruby>気持<rt>きも</rt></ruby>ちを<ruby>整理<rt>せいり</rt></ruby>できる。',
       en:'"By keeping a journal, you can organize your feelings."',
       note:'The action in ことで is the method/means.' },
     { id:'I3', pat:'～ことなく', mean:'without doing (formal / literary)', freq:false,
-      jp:'諦めることなく、挑戦し続けた。',
+      jp:'<ruby>諦<rt>あきら</rt></ruby>めることなく、<ruby>挑戦<rt>ちょうせん</rt></ruby>し<ruby>続<rt>つづ</rt></ruby>けた。',
       en:'"He continued to challenge without giving up."',
       note:'Formal alternative to ～ずに. Written/literary tone.' },
     { id:'I4', pat:'～ことか', mean:'how…! / what a…! (rhetorical emotion)', freq:false,
-      jp:'どれほど心配したことか。',
+      jp:'どれほど<ruby>心配<rt>しんぱい</rt></ruby>したことか。',
       en:'"How worried I was!" (rhetorical emphasis)',
       note:'The more/how, the stronger the feeling expressed.' },
     { id:'I5', pat:'～ことに', mean:'to my [emotion] / it is [emotion] that', freq:false,
-      jp:'残念なことに、彼は来られなかった。',
+      jp:'<ruby>残念<rt>ざんねん</rt></ruby>なことに、<ruby>彼<rt>かれ</rt></ruby>は<ruby>来<rt>こ</rt></ruby>られなかった。',
       en:'"To my disappointment, he couldn\'t make it."',
       note:'Sets emotional tone at sentence start. うれしいことに、悲しいことに…' },
     { id:'I6', pat:'～とともに', mean:'together with / as X changes, Y changes', freq:true,
-      jp:'時代とともに、価値観も変わった。彼女とともに夢を追いたい。',
+      jp:'<ruby>時代<rt>じだい</rt></ruby>とともに、<ruby>価値観<rt>かちかん</rt></ruby>も<ruby>変<rt>か</rt></ruby>わった。<ruby>彼女<rt>かのじょ</rt></ruby>とともに<ruby>夢<rt>ゆめ</rt></ruby>を<ruby>追<rt>お</rt></ruby>いたい。',
       en:'"As the times changed, values did too." / "I want to chase dreams together with her."',
       note:'Two uses: ① simultaneous change  ② doing something together with someone.' },
     { id:'I7', pat:'～にかけては', mean:'when it comes to / in the area of', freq:false,
-      jp:'料理の腕にかけては、誰にも負けない。',
+      jp:'<ruby>料理<rt>りょうり</rt></ruby>の<ruby>腕<rt>うで</rt></ruby>にかけては、<ruby>誰<rt>だれ</rt></ruby>にも<ruby>負<rt>ま</rt></ruby>けない。',
       en:'"When it comes to cooking skill, I lose to no one."',
       note:'Highlights someone\'s domain of excellence.' },
-    { id:'I8', pat:'～に加えて (くわえて)', mean:'in addition to / on top of (formal)', freq:false,
-      jp:'経験に加えて、資格も持っている。',
+    { id:'I8', pat:'～に<ruby>加<rt>くわ</rt></ruby>えて (くわえて)', mean:'in addition to / on top of (formal)', freq:false,
+      jp:'<ruby>経験<rt>けいけん</rt></ruby>に<ruby>加<rt>くわ</rt></ruby>えて、<ruby>資格<rt>しかく</rt></ruby>も<ruby>持<rt>も</rt></ruby>っている。',
       en:'"In addition to experience, they also have qualifications."',
       note:'Formal stacking of positives (or negatives). Written style.' },
-    { id:'I9', pat:'～に比べて (くらべて)', mean:'compared to', freq:false,
-      jp:'去年に比べて、今年は売上が20%増えた。',
+    { id:'I9', pat:'～に<ruby>比<rt>くら</rt></ruby>べて (くらべて)', mean:'compared to', freq:false,
+      jp:'<ruby>去年<rt>きょねん</rt></ruby>に<ruby>比<rt>くら</rt></ruby>べて、<ruby>今年<rt>ことし</rt></ruby>は<ruby>売上<rt>うりあげ</rt></ruby>が20%<ruby>増<rt>ふ</rt></ruby>えた。',
       en:'"Compared to last year, sales increased 20% this year."',
       note:'Very common in reading passages with data/statistics.' },
   ]
 },
 {
-  id:'J', name:'Scope & Range', color:'#ff6e96',
+  id:'J', name:'Scope & Range', color:'#B0568A', cat:'文法',
+  desc:'範圍與對象：をはじめ、を中心に、向けに。',
   patterns:[
     { id:'J1', pat:'～をはじめ(として)', mean:'starting with / including (such as)', freq:true,
-      jp:'東京をはじめ、全国で大雪が降った。',
+      jp:'<ruby>東京<rt>とうきょう</rt></ruby>をはじめ、<ruby>全国<rt>ぜんこく</rt></ruby>で<ruby>大雪<rt>おおゆき</rt></ruby>が<ruby>降<rt>ふ</rt></ruby>った。',
       en:'"Starting with Tokyo, heavy snow fell across the country."',
       note:'Introduces the most prominent example; implies others also apply.' },
-    { id:'J2', pat:'～を中心に / を中心として', mean:'centered on / focusing on', freq:false,
-      jp:'若者を中心に、この音楽が流行っている。',
+    { id:'J2', pat:'～を<ruby>中心<rt>ちゅうしん</rt></ruby>に / を<ruby>中心<rt>ちゅうしん</rt></ruby>として', mean:'centered on / focusing on', freq:false,
+      jp:'<ruby>若者<rt>わかもの</rt></ruby>を<ruby>中心<rt>ちゅうしん</rt></ruby>に、この<ruby>音楽<rt>おんがく</rt></ruby>が<ruby>流行<rt>はや</rt></ruby>っている。',
       en:'"This music is popular, centered among young people."',
       note:'Shows who/what the activity is focused on.' },
-    { id:'J3', pat:'～向けに / 向きに (むけ)', mean:'aimed at / designed for', freq:true,
-      jp:'初心者向けに書かれた本だ。',
+    { id:'J3', pat:'～<ruby>向<rt>む</rt></ruby>けに / <ruby>向<rt>む</rt></ruby>きに (むけ)', mean:'aimed at / designed for', freq:true,
+      jp:'<ruby>初心者<rt>しょしんしゃ</rt></ruby><ruby>向<rt>む</rt></ruby>けに<ruby>書<rt>か</rt></ruby>かれた<ruby>本<rt>ほん</rt></ruby>だ。',
       en:'"It\'s a book written for beginners."',
       note:'向けに = explicitly targeted at. 向きに = naturally suits.' },
     { id:'J4', pat:'～にわたって / にわたる', mean:'spanning / over (range or area)', freq:false,
-      jp:'3日間にわたって、会議が続いた。',
+      jp:'3<ruby>日間<rt>かかん</rt></ruby>にわたって、<ruby>会議<rt>かいぎ</rt></ruby>が<ruby>続<rt>つづ</rt></ruby>いた。',
       en:'"The meeting continued spanning 3 days."',
       note:'Used for time spans or areas. にわたる = noun modifier form.' },
   ]
 },
 {
-  id:'K', name:'Reproach & Commit', color:'#d2a8ff',
+  id:'K', name:'Reproach & Commit', color:'#674F9E', cat:'文法',
+  desc:'責備與決心：くせに、からには、以上は。',
   patterns:[
     { id:'K1', pat:'～くせに', mean:'even though (accusatory / blaming)', freq:true,
-      jp:'何も知らないくせに、偉そうなことを言うな。',
+      jp:'<ruby>何<rt>なに</rt></ruby>も<ruby>知<rt>し</rt></ruby>らないくせに、<ruby>偉<rt>えら</rt></ruby>そうなことを<ruby>言<rt>い</rt></ruby>うな。',
       en:'"Don\'t act all high and mighty when you don\'t know anything."',
       note:'Strong negative emotion. NEVER use with superiors — very rude.' },
     { id:'K2', pat:'～ながら (concessive)', mean:'even while / despite (formal, no blame)', freq:true,
-      jp:'悪いと知りながら、やめられない。',
+      jp:'<ruby>悪<rt>わる</rt></ruby>いと<ruby>知<rt>し</rt></ruby>りながら、やめられない。',
       en:'"Even knowing it\'s bad, I can\'t stop."',
       note:'Written/literary contrast. No blame unlike くせに.' },
     { id:'K3', pat:'～からには', mean:'now that / since (personal commitment)', freq:true,
-      jp:'やると言ったからには、最後までやり遂げる。',
+      jp:'やると<ruby>言<rt>い</rt></ruby>ったからには、<ruby>最後<rt>さいご</rt></ruby>までやり<ruby>遂<rt>と</rt></ruby>げる。',
       en:'"Now that I\'ve said I\'ll do it, I\'ll see it through to the end."',
       note:'Emotional resolve. The speaker feels obligated because of their own choice.' },
-    { id:'K4', pat:'～以上は / 以上 (いじょう)', mean:'given that / since (logical obligation)', freq:true,
-      jp:'責任者である以上、問題から逃げられない。',
+    { id:'K4', pat:'～<ruby>以上<rt>いじょう</rt></ruby>は / <ruby>以上<rt>いじょう</rt></ruby> (いじょう)', mean:'given that / since (logical obligation)', freq:true,
+      jp:'<ruby>責任者<rt>せきにんしゃ</rt></ruby>である<ruby>以上<rt>いじょう</rt></ruby>、<ruby>問題<rt>もんだい</rt></ruby>から<ruby>逃<rt>に</rt></ruby>げられない。',
       en:'"Given that I am the person responsible, I cannot run from the problem."',
       note:'More formal/logical than からには. Used in written language and essays.' },
+  ]
+},
+{
+  id:'L', name:'縮約形 Casual', color:'#2E7E8F', cat:'聴解', stamp:'聴',
+  desc:'聽力最大魔王：課本文法在對話中的變形，聽到要能秒還原原形。',
+  patterns:[
+    { id:'L1', pat:'～ちゃう / ～じゃう', mean:'casual てしまう (completed / regret)', freq:true,
+      jp:'ごめん、<ruby>先<rt>さき</rt></ruby>に<ruby>食<rt>た</rt></ruby>べちゃった。',
+      en:'"Sorry, I went ahead and ate." (=食べてしまった)',
+      note:'じゃう after ん-verbs: 読んじゃう. Past form ちゃった is EVERYWHERE in listening — often with apology or regret tone.' },
+    { id:'L2', pat:'～とく / ～どく', mean:'casual ておく (do in advance)', freq:true,
+      jp:'<ruby>会議<rt>かいぎ</rt></ruby>の<ruby>資料<rt>しりょう</rt></ruby>、コピーしといたよ。',
+      en:'"I copied the meeting docs beforehand." (=しておいた)',
+      note:'～といて = "please do X in advance". Task-based questions (課題理解) love this form.' },
+    { id:'L3', pat:'～てる / ～でる', mean:'casual ている (ongoing OR resultant state)', freq:true,
+      jp:'<ruby>田中<rt>たなか</rt></ruby>さん、もう<ruby>帰<rt>かえ</rt></ruby>ってますよ。',
+      en:'"Tanaka has already gone home." (resultant state)',
+      note:'帰ってる = already gone, NOT "going home now". Motion verbs + てる = result state. Classic trap.' },
+    { id:'L4', pat:'～なきゃ / ～なくちゃ', mean:'casual なければならない (gotta)', freq:true,
+      jp:'もう9<ruby>時<rt>とき</rt></ruby>？<ruby>帰<rt>かえ</rt></ruby>らなきゃ。',
+      en:'"It\'s already 9? I gotta go."',
+      note:'ならない/いけない usually dropped. Signals the speaker\'s NEXT ACTION — often the answer itself.' },
+    { id:'L5', pat:'～って', mean:'casual と / という (quote / topic)', freq:true,
+      jp:'<ruby>部長<rt>ぶちょう</rt></ruby>、<ruby>今日<rt>きょう</rt></ruby>は<ruby>来<rt>こ</rt></ruby>ないって。',
+      en:'"The boss says he\'s not coming today."',
+      note:'Sentence-final って = reporting someone\'s words. Miss it and you mix up WHO does WHAT.' },
+    { id:'L6', pat:'～んだ / ～んです', mean:'explanation tone のだ', freq:true,
+      jp:'すみません、ちょっと<ruby>熱<rt>ねつ</rt></ruby>があるんです。',
+      en:'"The thing is, I have a bit of a fever."',
+      note:'んです gives background → a REQUEST usually follows. Hear it, expect a favor.' },
+  ]
+},
+{
+  id:'M', name:'聴解 Mood', color:'#B03A45', cat:'聴解', stamp:'聴',
+  desc:'語氣與態度判斷：日本人拒絕和不滿常常不直說，要聽出真正的意思。',
+  patterns:[
+    { id:'M1', pat:'～に<ruby>決<rt>き</rt></ruby>まっている', mean:'obviously / definitely (strong casual)', freq:true,
+      jp:'そんなうまい<ruby>話<rt>はなし</rt></ruby>、<ruby>嘘<rt>うそ</rt></ruby>に<ruby>決<rt>き</rt></ruby>まってるよ。',
+      en:'"A deal that good is obviously a scam."',
+      note:'Emotional certainty, more casual than に違いない. Speaker feeling is STRONG — answer accordingly in 即時応答.' },
+    { id:'M2', pat:'～かねない', mean:'might well happen (BAD outcome only)', freq:true,
+      jp:'そんなに<ruby>飛<rt>と</rt></ruby>ばしたら、<ruby>事故<rt>じこ</rt></ruby>を<ruby>起<rt>お</rt></ruby>こしかねない。',
+      en:'"Driving that fast, you could well cause an accident."',
+      note:'Looks positive but means possible BAD result. Twin trap with かねます below.' },
+    { id:'M3', pat:'～かねます', mean:'cannot / unable to (polite business NO)', freq:true,
+      jp:'その<ruby>件<rt>けん</rt></ruby>についてはお<ruby>答<rt>こた</rt></ruby>えしかねます。',
+      en:'"We are unable to answer regarding that matter."',
+      note:'No ない anywhere, but the meaning is NO. Standard customer-service refusal.' },
+    { id:'M4', pat:'～ないこともない', mean:'not impossible, but… (reluctant)', freq:false,
+      jp:'<ruby>行<rt>い</rt></ruby>けないこともないけど、ちょっと<ruby>遠<rt>とお</rt></ruby>いなあ。',
+      en:'"It\'s not that I can\'t go, but it\'s a bit far…"',
+      note:'Focus on the trailing けど — this is closer to a soft NO than a yes.' },
+    { id:'M5', pat:'ちょっと…（<ruby>言<rt>い</rt></ruby>いさし）', mean:'unfinished sentence = soft refusal', freq:true,
+      jp:'A：<ruby>明日<rt>あした</rt></ruby>、<ruby>飲<rt>の</rt></ruby>みに<ruby>行<rt>い</rt></ruby>かない？　B：<ruby>明日<rt>あした</rt></ruby>はちょっと…。',
+      en:'A: "Drinks tomorrow?" B: "Tomorrow is a bit…" (= no)',
+      note:'Unfinished sentence + falling tone = REFUSAL. Core pattern of 即時応答. Also それが…／せっかくですが….' },
+    { id:'M6', pat:'～どころか', mean:'far from / let alone (escalation)', freq:false,
+      jp:'<ruby>漢字<rt>かんじ</rt></ruby>どころか、ひらがなも<ruby>読<rt>よ</rt></ruby>めない。',
+      en:'"Let alone kanji, they can\'t even read hiragana."',
+      note:'Denies X, then escalates with a more extreme fact.' },
+    { id:'M7', pat:'～からといって', mean:'just because X doesn\'t mean Y', freq:true,
+      jp:'<ruby>値段<rt>ねだん</rt></ruby>が<ruby>高<rt>たか</rt></ruby>いからといって、<ruby>質<rt>しつ</rt></ruby>がいいとは<ruby>限<rt>かぎ</rt></ruby>らない。',
+      en:'"Just because it\'s expensive doesn\'t mean the quality is good."',
+      note:'Speaker is REBUTTING an opinion. Real point is in the negative second half — key for 概要理解.' },
+  ]
+},
+{
+  id:'N', name:'敬語 Keigo', color:'#4C8A5C', cat:'敬語', stamp:'聴',
+  desc:'尊敬語抬高對方、謙讓語壓低自己。方向＝誰做動作，課題理解必考。',
+  patterns:[
+    { id:'N1', pat:'いらっしゃる ⇄ <ruby>伺<rt>うかが</rt></ruby>う・<ruby>参<rt>まい</rt></ruby>る', mean:'go / come / be (respect ⇄ humble)', freq:true,
+      jp:'<ruby>先生<rt>せんせい</rt></ruby>は<ruby>会議室<rt>かいぎしつ</rt></ruby>にいらっしゃいます。／<ruby>明日<rt>あした</rt></ruby>、<ruby>御社<rt>おんしゃ</rt></ruby>に<ruby>伺<rt>うかが</rt></ruby>います。',
+      en:'"The teacher is in the meeting room." / "I will visit your company tomorrow."',
+      note:'いらっしゃる = THEY move (respect). 伺う・参る = I move (humble). Direction tells you WHO acts.' },
+    { id:'N2', pat:'<ruby>召<rt>め</rt></ruby>し<ruby>上<rt>あ</rt></ruby>がる ⇄ いただく', mean:'eat / drink (respect ⇄ humble)', freq:true,
+      jp:'どうぞ<ruby>召<rt>め</rt></ruby>し<ruby>上<rt>あ</rt></ruby>がってください。／お<ruby>先<rt>さき</rt></ruby>にいただきます。',
+      en:'"Please go ahead and eat." / "I\'ll start eating, thanks."',
+      note:'いただく also = receive (もらう humble): 資料をいただけますか.' },
+    { id:'N3', pat:'ご<ruby>覧<rt>らん</rt></ruby>になる ⇄ <ruby>拝見<rt>はいけん</rt></ruby>する', mean:'see / look (respect ⇄ humble)', freq:true,
+      jp:'<ruby>資料<rt>しりょう</rt></ruby>をご<ruby>覧<rt>らん</rt></ruby>になりましたか。／メールを<ruby>拝見<rt>はいけん</rt></ruby>しました。',
+      en:'"Have you looked at the materials?" / "I have read your email."',
+      note:'ご覧ください = please look (to customer). 拝見します = I will look (at yours).' },
+    { id:'N4', pat:'おっしゃる ⇄ <ruby>申<rt>もう</rt></ruby>す・<ruby>申<rt>もう</rt></ruby>し<ruby>上<rt>あ</rt></ruby>げる', mean:'say (respect ⇄ humble)', freq:true,
+      jp:'<ruby>部長<rt>ぶちょう</rt></ruby>がそうおっしゃいました。／<ruby>田中<rt>たなか</rt></ruby>と<ruby>申<rt>もう</rt></ruby>します。',
+      en:'"The department head said so." / "My name is Tanaka."',
+      note:'おっしゃる = their words. 申す = my words / my name.' },
+    { id:'N5', pat:'なさる ⇄ いたす', mean:'do (respect ⇄ humble)', freq:true,
+      jp:'ご<ruby>予約<rt>よやく</rt></ruby>はなさいましたか。／<ruby>私<rt>わたし</rt></ruby>がご<ruby>案内<rt>あんない</rt></ruby>いたします。',
+      en:'"Have you made a reservation?" / "I will show you the way."',
+      note:'いたします in announcements = the STAFF/speaker side will do it.' },
+    { id:'N6', pat:'～ていただけませんか', mean:'could YOU please… (they act)', freq:true,
+      jp:'もう<ruby>一度<rt>いちど</rt></ruby><ruby>説明<rt>せつめい</rt></ruby>していただけませんか。',
+      en:'"Could you please explain it once more?"',
+      note:'Very polite request — the LISTENER does the action.' },
+    { id:'N7', pat:'～させていただきます', mean:'allow ME to… (I act)', freq:true,
+      jp:'<ruby>本日<rt>ほんじつ</rt></ruby>は<ruby>休業<rt>きゅうぎょう</rt></ruby>させていただきます。',
+      en:'"We will (humbly) be closed today."',
+      note:'The SPEAKER does the action. Opposite direction from N6 — the #1 keigo trap in 課題理解.' },
+    { id:'N8', pat:'～てもらえると<ruby>助<rt>たす</rt></ruby>かる', mean:'it would help if you could (soft order)', freq:true,
+      jp:'<ruby>今日中<rt>きょうじゅう</rt></ruby>にデータを<ruby>送<rt>おく</rt></ruby>ってもらえると<ruby>助<rt>たす</rt></ruby>かるんだけど。',
+      en:'"It would really help if you could send the data today."',
+      note:'Sounds like a wish, functions as an INSTRUCTION at work. Same family: ～てもらってもいい？' },
+  ]
+},
+{
+  id:'O', name:'副詞 Adverbs', color:'#B45A73', cat:'語彙',
+  desc:'高頻副詞：文字語彙和聽力都常考，最適合電車上零碎時間刷。',
+  patterns:[
+    { id:'O1', pat:'つい', mean:'without meaning to (habit / impulse)', freq:true,
+      jp:'ダイエット<ruby>中<rt>ちゅう</rt></ruby>なのに、つい<ruby>食<rt>た</rt></ruby>べてしまった。',
+      en:'"Even though I\'m on a diet, I ended up eating without meaning to."',
+      note:'Impulse you failed to resist. Very often pairs with ～てしまう／ちゃう.' },
+    { id:'O2', pat:'うっかり', mean:'carelessly (forgot / slipped up)', freq:true,
+      jp:'うっかり<ruby>約束<rt>やくそく</rt></ruby>を<ruby>忘<rt>わす</rt></ruby>れてしまった。',
+      en:'"I carelessly forgot the appointment."',
+      note:'Careless mistake from inattention — usually forgetting or misplacing.' },
+    { id:'O3', pat:'<ruby>思<rt>おも</rt></ruby>わず', mean:'instinctively / in spite of oneself', freq:false,
+      jp:'おかしくて、<ruby>思<rt>おも</rt></ruby>わず<ruby>笑<rt>わら</rt></ruby>ってしまった。',
+      en:'"It was so funny I burst out laughing in spite of myself."',
+      note:'Reflex reaction to a sudden stimulus — no time to think.' },
+    { id:'O4', pat:'わざわざ', mean:'going out of one\'s way (extra effort)', freq:true,
+      jp:'わざわざ<ruby>届<rt>とど</rt></ruby>けてくれて、ありがとう。',
+      en:'"Thank you for going out of your way to deliver it."',
+      note:'Effort beyond necessity — usually appreciative. NOT the same as わざと.' },
+    { id:'O5', pat:'わざと', mean:'on purpose (usually negative)', freq:true,
+      jp:'<ruby>彼<rt>かれ</rt></ruby>はわざと<ruby>負<rt>ま</rt></ruby>けたんじゃないかと<ruby>思<rt>おも</rt></ruby>う。',
+      en:'"I suspect he lost on purpose."',
+      note:'Deliberate act, often with bad intent. Classic pair-trap with わざわざ.' },
+    { id:'O6', pat:'かえって', mean:'on the contrary / ended up worse', freq:true,
+      jp:'<ruby>急<rt>いそ</rt></ruby>いだら、かえって<ruby>時間<rt>じかん</rt></ruby>がかかった。',
+      en:'"I hurried, and it ended up taking MORE time."',
+      note:'Result is the OPPOSITE of what was intended. Big listening keyword.' },
+    { id:'O7', pat:'せめて', mean:'at least (minimum wish)', freq:false,
+      jp:'せめて<ruby>一言<rt>ひとこと</rt></ruby>、<ruby>謝<rt>あやま</rt></ruby>ってほしかった。',
+      en:'"I wished for at least one word of apology."',
+      note:'The speaker\'s minimum acceptable line. Often unfulfilled → disappointment.' },
+    { id:'O8', pat:'まさか', mean:'no way / never imagined', freq:true,
+      jp:'まさか<ruby>彼<rt>かれ</rt></ruby>が<ruby>犯人<rt>はんにん</rt></ruby>だとは<ruby>思<rt>おも</rt></ruby>わなかった。',
+      en:'"I never imagined HE was the culprit."',
+      note:'Shock at the unexpected. まさか～ないよね？ = seeking reassurance.' },
+    { id:'O9', pat:'めったに～ない', mean:'rarely / hardly ever', freq:false,
+      jp:'<ruby>彼<rt>かれ</rt></ruby>はめったに<ruby>怒<rt>おこ</rt></ruby>らない。',
+      en:'"He hardly ever gets angry."',
+      note:'Always with negative. If he IS angry now → something serious happened.' },
+    { id:'O10', pat:'いっそ', mean:'might as well (drastic option)', freq:false,
+      jp:'そんなに<ruby>嫌<rt>いや</rt></ruby>なら、いっそ<ruby>辞<rt>や</rt></ruby>めたらどう？',
+      en:'"If you hate it that much, why not just quit altogether?"',
+      note:'Proposes a bold, drastic alternative rather than a small fix.' },
+  ]
+},
+{
+  id:'P', name:'受身・使役', color:'#745399', cat:'聴解', stamp:'聴',
+  desc:'被動、使役、授受表現。聽力問「誰做了動作」時，方向搞錯就全錯。',
+  patterns:[
+    { id:'P1', pat:'～（ら）れる（<ruby>迷惑<rt>めいわく</rt></ruby>の<ruby>受身<rt>うけみ</rt></ruby>）', mean:'suffering passive — negatively affected', freq:true,
+      jp:'<ruby>帰<rt>かえ</rt></ruby>り<ruby>道<rt>みち</rt></ruby>で<ruby>雨<rt>あめ</rt></ruby>に<ruby>降<rt>ふ</rt></ruby>られて、びしょ<ruby>濡<rt>ぬ</rt></ruby>れになった。',
+      en:'"I got rained on on the way home and was soaked."',
+      note:'The subject SUFFERS from the action. 足を踏まれた、財布を盗まれた — complaint tone.' },
+    { id:'P2', pat:'～させる（<ruby>使役<rt>しえき</rt></ruby>）', mean:'make / let someone do', freq:true,
+      jp:'<ruby>部長<rt>ぶちょう</rt></ruby>は<ruby>新人<rt>しんじん</rt></ruby>に<ruby>資料<rt>しりょう</rt></ruby>を<ruby>作<rt>つく</rt></ruby>らせた。',
+      en:'"The manager had the newcomer make the materials."',
+      note:'The DOER is marked with に (or を). Listening asks: who actually acts? → the newcomer.' },
+    { id:'P3', pat:'～させられる（<ruby>使役<rt>しえき</rt></ruby><ruby>受身<rt>うけみ</rt></ruby>）', mean:'be forced to do (against will)', freq:true,
+      jp:'<ruby>飲<rt>の</rt></ruby>み<ruby>会<rt>かい</rt></ruby>で<ruby>無理<rt>むり</rt></ruby>やり<ruby>歌<rt>うた</rt></ruby>わされた。',
+      en:'"I was forced to sing at the drinking party."',
+      note:'Speaker DOES the action but unwillingly. 歌わされた＝歌わせられた. Strong complaint tone.' },
+    { id:'P4', pat:'～てもらう', mean:'have someone do (for me)', freq:true,
+      jp:'<ruby>先輩<rt>せんぱい</rt></ruby>にレポートを<ruby>直<rt>なお</rt></ruby>してもらった。',
+      en:'"I had my senpai fix my report."',
+      note:'The ACTOR is the に person (senpai), NOT the subject. Classic who-does-what trap.' },
+    { id:'P5', pat:'～てくれる', mean:'someone kindly does for me', freq:true,
+      jp:'<ruby>田中<rt>たなか</rt></ruby>さんが<ruby>引<rt>ひ</rt></ruby>っ<ruby>越<rt>こ</rt></ruby>しを<ruby>手伝<rt>てつだ</rt></ruby>ってくれた。',
+      en:'"Tanaka kindly helped me move."',
+      note:'Actor = the が subject; benefit flows TO the speaker. Compare with てもらう above.' },
+    { id:'P6', pat:'<ruby>尊敬<rt>そんけい</rt></ruby>の～（ら）れる', mean:'られる as honorific (not passive!)', freq:false,
+      jp:'<ruby>先生<rt>せんせい</rt></ruby>は<ruby>何時<rt>なんじ</rt></ruby>ごろ<ruby>戻<rt>もど</rt></ruby>られますか。',
+      en:'"Around what time will the teacher return?" (honorific)',
+      note:'られる has 3 readings: passive / potential / HONORIFIC. Business dialogs use the honorific a lot.' },
+  ]
+},
+{
+  id:'Q', name:'擬態語', color:'#5A6E3A', cat:'聴解', stamp:'聴',
+  desc:'擬聲擬態語：對話高頻，一個詞就決定整句的情境和心情。',
+  patterns:[
+    { id:'Q1', pat:'ぎりぎり', mean:'just barely (time / limit)', freq:true,
+      jp:'<ruby>終電<rt>しゅうでん</rt></ruby>にぎりぎり<ruby>間<rt>ま</rt></ruby>に<ruby>合<rt>あ</rt></ruby>った。',
+      en:'"I just barely made the last train."',
+      note:'At the very edge of a limit — time, money, space.' },
+    { id:'Q2', pat:'ばったり', mean:'run into by chance', freq:true,
+      jp:'<ruby>駅<rt>えき</rt></ruby>で<ruby>昔<rt>むかし</rt></ruby>の<ruby>友達<rt>ともだち</rt></ruby>にばったり<ruby>会<rt>かい</rt></ruby>った。',
+      en:'"I bumped into an old friend at the station."',
+      note:'Unexpected encounter. Also = collapse suddenly (ばったり倒れる).' },
+    { id:'Q3', pat:'ぐっすり', mean:'sleeping soundly', freq:true,
+      jp:'<ruby>昨日<rt>きのう</rt></ruby>は<ruby>久<rt>ひさ</rt></ruby>しぶりにぐっすり<ruby>眠<rt>ねむ</rt></ruby>れた。',
+      en:'"Last night I finally slept soundly."',
+      note:'Only for deep sleep. ぐっすり＋眠る／寝る is a fixed pair.' },
+    { id:'Q4', pat:'いらいら', mean:'irritated / on edge', freq:true,
+      jp:'<ruby>渋滞<rt>じゅうたい</rt></ruby>でいらいらしてきた。',
+      en:'"The traffic jam is getting on my nerves."',
+      note:'Mood word — questions about 話者の気持ち love this.' },
+    { id:'Q5', pat:'がっかり', mean:'disappointed', freq:true,
+      jp:'<ruby>楽<rt>たの</rt></ruby>しみにしていた<ruby>旅行<rt>りょこう</rt></ruby>が<ruby>中止<rt>ちゅうし</rt></ruby>になって、がっかりした。',
+      en:'"The trip I was looking forward to got cancelled — what a letdown."',
+      note:'Expectation existed, then collapsed. Pairs with 楽しみにしていた.' },
+    { id:'Q6', pat:'そろそろ', mean:'about time to… (departure signal)', freq:true,
+      jp:'では、そろそろ<ruby>失礼<rt>しつれい</rt></ruby>します。',
+      en:'"Well then, it\'s about time I got going."',
+      note:'そろそろ＝conversation is ENDING or a decision is due. Big listening cue.' },
+    { id:'Q7', pat:'こっそり', mean:'secretly / sneakily', freq:false,
+      jp:'<ruby>母<rt>はは</rt></ruby>にないしょで、こっそり<ruby>出<rt>で</rt></ruby>かけた。',
+      en:'"I snuck out without telling my mom."',
+      note:'Doing something while hiding it from someone.' },
+    { id:'Q8', pat:'うろうろ', mean:'wander around aimlessly', freq:false,
+      jp:'<ruby>道<rt>みち</rt></ruby>に<ruby>迷<rt>まよ</rt></ruby>って、<ruby>駅<rt>えき</rt></ruby>の<ruby>周<rt>まわ</rt></ruby>りをうろうろした。',
+      en:'"I got lost and wandered around the station."',
+      note:'Aimless movement — often suspicious or lost.' },
+    { id:'Q9', pat:'ぺこぺこ', mean:'starving / bowing repeatedly', freq:false,
+      jp:'<ruby>朝<rt>あさ</rt></ruby>から<ruby>何<rt>なに</rt></ruby>も<ruby>食<rt>た</rt></ruby>べてなくて、お<ruby>腹<rt>はら</rt></ruby>がぺこぺこだ。',
+      en:'"I haven\'t eaten since morning — I\'m starving."',
+      note:'お腹がぺこぺこ = hungry. 頭をぺこぺこ下げる = bow repeatedly (apologetic).' },
+    { id:'Q10', pat:'たっぷり', mean:'plenty of / generously', freq:false,
+      jp:'<ruby>今日<rt>きょう</rt></ruby>は<ruby>時間<rt>じかん</rt></ruby>がたっぷりあるから、ゆっくりしよう。',
+      en:'"We have plenty of time today, so let\'s take it easy."',
+      note:'Abundance of time, sauce, sleep — more than enough.' },
+    { id:'Q11', pat:'わくわく', mean:'excited (anticipation)', freq:true,
+      jp:'<ruby>明日<rt>あした</rt></ruby>の<ruby>旅行<rt>りょこう</rt></ruby>のことを<ruby>考<rt>かんが</rt></ruby>えると、わくわくする。',
+      en:'"Thinking about tomorrow\'s trip gets me excited."',
+      note:'Positive anticipation. Mood questions: 楽しみ＝わくわく.' },
+    { id:'Q12', pat:'どきどき', mean:'heart pounding (nervous)', freq:true,
+      jp:'<ruby>面接<rt>めんせつ</rt></ruby>の<ruby>前<rt>まえ</rt></ruby>で、<ruby>心臓<rt>しんぞう</rt></ruby>がどきどきしている。',
+      en:'"My heart is pounding before the interview."',
+      note:'Nervousness or excitement — physical heartbeat image.' },
+    { id:'Q13', pat:'ぼんやり', mean:'absent-minded / hazy', freq:false,
+      jp:'ぼんやりしていて、<ruby>駅<rt>えき</rt></ruby>を<ruby>乗<rt>の</rt></ruby>り<ruby>過<rt>す</rt></ruby>ごした。',
+      en:'"I was spacing out and missed my station."',
+      note:'Mind not focused. Also = dim/vague (ぼんやり見える).' },
+    { id:'Q14', pat:'のんびり', mean:'relaxed / leisurely', freq:false,
+      jp:'<ruby>週末<rt>しゅうまつ</rt></ruby>は<ruby>家<rt>いえ</rt></ruby>でのんびり<ruby>過<rt>す</rt></ruby>ごした。',
+      en:'"I spent the weekend relaxing at home."',
+      note:'Unhurried and at ease — opposite of いらいら.' },
+  ]
+},
+{
+  id:'R', name:'接続詞', color:'#53727D', cat:'語彙',
+  desc:'接續詞是文章和對話的路標：答案常常就藏在 ところが／ただし 後面。',
+  patterns:[
+    { id:'R1', pat:'したがって', mean:'therefore / consequently (formal)', freq:true,
+      jp:'<ruby>本日<rt>ほんじつ</rt></ruby>は<ruby>祝日<rt>しゅくじつ</rt></ruby>である。したがって、<ruby>窓口<rt>まどぐち</rt></ruby>は<ruby>休業<rt>きゅうぎょう</rt></ruby>する。',
+      en:'"Today is a national holiday. Therefore, the counter is closed."',
+      note:'Formal written conclusion. Casual equivalents: だから、それで.' },
+    { id:'R2', pat:'ところが', mean:'however — unexpected turn', freq:true,
+      jp:'<ruby>晴<rt>は</rt></ruby>れると<ruby>思<rt>おも</rt></ruby>っていた。ところが、<ruby>大雨<rt>おおあめ</rt></ruby>になった。',
+      en:'"I thought it would be sunny. However, it poured."',
+      note:'What follows is CONTRARY to expectation — listening answers hide right after it.' },
+    { id:'R3', pat:'それにもかかわらず', mean:'despite that / nevertheless', freq:false,
+      jp:'<ruby>何度<rt>なんど</rt></ruby>も<ruby>注意<rt>ちゅうい</rt></ruby>した。それにもかかわらず、<ruby>彼<rt>かれ</rt></ruby>は<ruby>同<rt>おな</rt></ruby>じミスを<ruby>繰<rt>く</rt></ruby>り<ruby>返<rt>かえ</rt></ruby>した。',
+      en:'"I warned him many times. Nevertheless, he repeated the same mistake."',
+      note:'Stronger and more formal than それでも.' },
+    { id:'R4', pat:'つまり／<ruby>要<rt>よう</rt></ruby>するに', mean:'in other words / in short', freq:true,
+      jp:'<ruby>要<rt>よう</rt></ruby>するに、<ruby>今回<rt>こんかい</rt></ruby>は<ruby>参加<rt>さんか</rt></ruby>できないということですね。',
+      en:'"In short, you\'re saying you can\'t participate this time, right?"',
+      note:'A SUMMARY follows — the 概要理解 answer zone. Speaker restates the main point.' },
+    { id:'R5', pat:'ただし', mean:'however / provided that (condition)', freq:true,
+      jp:'<ruby>入場<rt>にゅうじょう</rt></ruby>は<ruby>無料<rt>むりょう</rt></ruby>です。ただし、<ruby>事前<rt>じぜん</rt></ruby><ruby>予約<rt>よやく</rt></ruby>が<ruby>必要<rt>ひつよう</rt></ruby>です。',
+      en:'"Admission is free. However, advance reservation is required."',
+      note:'The FINE PRINT. Task questions hide crucial conditions after ただし.' },
+    { id:'R6', pat:'<ruby>一方<rt>いっぽう</rt></ruby>（で）', mean:'on the other hand / meanwhile', freq:true,
+      jp:'<ruby>賛成<rt>さんせい</rt></ruby>の<ruby>声<rt>こえ</rt></ruby>がある。<ruby>一方<rt>いっぽう</rt></ruby>で、<ruby>反対<rt>はんたい</rt></ruby><ruby>意見<rt>いけん</rt></ruby>も<ruby>根強<rt>ねづよ</rt></ruby>い。',
+      en:'"There are voices of support. On the other hand, opposition remains strong."',
+      note:'Presents the contrasting side — both sides matter for 概要理解.' },
+    { id:'R7', pat:'そのうえ／さらに', mean:'moreover / on top of that', freq:false,
+      jp:'<ruby>彼<rt>かれ</rt></ruby>は<ruby>仕事<rt>しごと</rt></ruby>が<ruby>速<rt>はや</rt></ruby>い。そのうえ、ミスも<ruby>少<rt>すく</rt></ruby>ない。',
+      en:'"He works fast. Moreover, he makes few mistakes."',
+      note:'Stacks additional info in the SAME direction (good+good / bad+bad).' },
+    { id:'R8', pat:'すると', mean:'and then / thereupon', freq:false,
+      jp:'ボタンを<ruby>押<rt>お</rt></ruby>した。すると、ドアが<ruby>開<rt>あ</rt></ruby>いた。',
+      en:'"I pressed the button. Then the door opened."',
+      note:'Immediate result or discovery follows the previous action.' },
+  ]
+},
+{
+  id:'S', name:'気の慣用句', color:'#9F563A', cat:'語彙',
+  desc:'気系慣用句：一字之差意思全變，文字語彙必考，聽力也常出現。',
+  patterns:[
+    { id:'S1', pat:'<ruby>気<rt>き</rt></ruby>がする', mean:'have a feeling that / it seems to me', freq:true,
+      jp:'<ruby>誰<rt>だれ</rt></ruby>かに<ruby>見<rt>み</rt></ruby>られている<ruby>気<rt>き</rt></ruby>がする。',
+      en:'"I have a feeling someone is watching me."',
+      note:'Vague intuition without solid evidence.' },
+    { id:'S2', pat:'<ruby>気<rt>き</rt></ruby>にする', mean:'worry about / mind (deliberate)', freq:true,
+      jp:'そんな<ruby>小<rt>ちい</rt></ruby>さな<ruby>失敗<rt>しっぱい</rt></ruby>、<ruby>気<rt>き</rt></ruby>にしないで。',
+      en:'"Don\'t worry about such a small mistake."',
+      note:'CONTROLLABLE worrying. 気にしないで = don\'t let it bother you.' },
+    { id:'S3', pat:'<ruby>気<rt>き</rt></ruby>になる', mean:'can\'t stop thinking about / curious', freq:true,
+      jp:'<ruby>試験<rt>しけん</rt></ruby>の<ruby>結果<rt>けっか</rt></ruby>が<ruby>気<rt>き</rt></ruby>になって<ruby>眠<rt>ねむ</rt></ruby>れない。',
+      en:'"I\'m so anxious about the exam results I can\'t sleep."',
+      note:'INVOLUNTARY — it bothers you on its own. Pair-trap with 気にする.' },
+    { id:'S4', pat:'<ruby>気<rt>き</rt></ruby>がつく', mean:'notice / realize', freq:true,
+      jp:'<ruby>家<rt>いえ</rt></ruby>を<ruby>出<rt>で</rt></ruby>てから、<ruby>忘<rt>わす</rt></ruby>れ<ruby>物<rt>もの</rt></ruby>に<ruby>気<rt>き</rt></ruby>がついた。',
+      en:'"After leaving home, I realized I\'d forgotten something."',
+      note:'Also 気づく. In listening: the moment of realization changes the task.' },
+    { id:'S5', pat:'<ruby>気<rt>き</rt></ruby>が<ruby>利<rt>き</rt></ruby>く', mean:'attentive / thoughtful', freq:false,
+      jp:'<ruby>彼女<rt>かのじょ</rt></ruby>は<ruby>本当<rt>ほんとう</rt></ruby>に<ruby>気<rt>き</rt></ruby>が<ruby>利<rt>き</rt></ruby>く<ruby>人<rt>ひと</rt></ruby>だ。',
+      en:'"She\'s a really attentive person."',
+      note:'Notices what others need before being asked. High praise.' },
+    { id:'S6', pat:'<ruby>気<rt>き</rt></ruby>を<ruby>遣<rt>つか</rt></ruby>う', mean:'be considerate (mentally tiring)', freq:true,
+      jp:'<ruby>上司<rt>じょうし</rt></ruby>に<ruby>気<rt>き</rt></ruby>を<ruby>遣<rt>つか</rt></ruby>って、すっかり<ruby>疲<rt>つか</rt></ruby>れた。',
+      en:'"I was so busy being considerate of my boss that I\'m exhausted."',
+      note:'Social consideration as EFFORT. 気を遣わないで = make yourself at home.' },
+    { id:'S7', pat:'<ruby>気<rt>き</rt></ruby>が<ruby>進<rt>すす</rt></ruby>まない', mean:'reluctant / not feeling it', freq:true,
+      jp:'<ruby>正直<rt>しょうじき</rt></ruby>、その<ruby>飲<rt>の</rt></ruby>み<ruby>会<rt>かい</rt></ruby>にはあまり<ruby>気<rt>き</rt></ruby>が<ruby>進<rt>すす</rt></ruby>まない。',
+      en:'"Honestly, I\'m not really up for that drinking party."',
+      note:'Soft refusal signal in conversation — expect a decline to follow.' },
+    { id:'S8', pat:'<ruby>気<rt>き</rt></ruby>のせい', mean:'just my imagination', freq:false,
+      jp:'<ruby>今<rt>いま</rt></ruby>、<ruby>音<rt>おと</rt></ruby>がしなかった？――<ruby>気<rt>き</rt></ruby>のせいだよ。',
+      en:'"Did you hear a sound just now?" "It\'s just your imagination."',
+      note:'Denies that something actually happened.' },
+  ]
+},
+{
+  id:'T', name:'ひらがな語', color:'#3D6E9E', cat:'語彙',
+  desc:'沒有漢字可以攀附的平假名詞：語彙用法題最愛，華語考生的必修盲點。',
+  patterns:[
+    { id:'T1', pat:'あいにく', mean:'unfortunately (bad timing)', freq:true,
+      jp:'あいにく、その<ruby>日<rt>ひ</rt></ruby>は<ruby>都合<rt>つごう</rt></ruby>が<ruby>悪<rt>わる</rt></ruby>いんです。',
+      en:'"Unfortunately, that day doesn\'t work for me."',
+      note:'Polite regret about timing — often opens a refusal.' },
+    { id:'T2', pat:'いきなり', mean:'suddenly / without warning', freq:true,
+      jp:'<ruby>彼<rt>かれ</rt></ruby>はいきなり<ruby>話<rt>はな</rt></ruby>しかけてきた。',
+      en:'"He suddenly started talking to me."',
+      note:'No preparation, out of nowhere. ≒突然.' },
+    { id:'T3', pat:'おそらく', mean:'probably (formal)', freq:true,
+      jp:'おそらく<ruby>明日<rt>あした</rt></ruby>には<ruby>結果<rt>けっか</rt></ruby>が<ruby>出<rt>で</rt></ruby>るだろう。',
+      en:'"The results will probably come out by tomorrow."',
+      note:'Formal たぶん. Pairs with だろう／でしょう.' },
+    { id:'T4', pat:'しばらく', mean:'for a while', freq:true,
+      jp:'しばらくお<ruby>待<rt>ま</rt></ruby>ちください。',
+      en:'"Please wait a moment."',
+      note:'しばらくですね＝long time no see (greeting).' },
+    { id:'T5', pat:'たまたま', mean:'by coincidence', freq:true,
+      jp:'たまたま<ruby>駅<rt>えき</rt></ruby>で<ruby>先生<rt>せんせい</rt></ruby>に<ruby>会<rt>かい</rt></ruby>った。',
+      en:'"I happened to run into my teacher at the station."',
+      note:'Pure chance, no intention. ≒偶然.' },
+    { id:'T6', pat:'とっくに', mean:'long ago / already (way before)', freq:false,
+      jp:'<ruby>会議<rt>かいぎ</rt></ruby>はとっくに<ruby>終<rt>お</rt></ruby>わったよ。',
+      en:'"The meeting ended ages ago."',
+      note:'Much earlier than assumed — mild reproach tone.' },
+    { id:'T7', pat:'なるべく', mean:'as much as possible', freq:true,
+      jp:'なるべく<ruby>早<rt>はや</rt></ruby>めに<ruby>来<rt>く</rt></ruby>てください。',
+      en:'"Please come as early as possible."',
+      note:'≒できるだけ. Soft request wording in announcements.' },
+    { id:'T8', pat:'ふと', mean:'suddenly (a thought / noticing)', freq:false,
+      jp:'ふと<ruby>子供<rt>こども</rt></ruby>のころを<ruby>思<rt>おも</rt></ruby>い<ruby>出<rt>だ</rt></ruby>した。',
+      en:'"I suddenly remembered my childhood."',
+      note:'A thought that arises by itself — used with 思う／気づく.' },
+    { id:'T9', pat:'あらかじめ', mean:'in advance (formal)', freq:true,
+      jp:'あらかじめご<ruby>了承<rt>りょうしょう</rt></ruby>ください。',
+      en:'"We ask for your understanding in advance."',
+      note:'Formal 前もって. Fixed phrase in notices — listening announcements too.' },
+    { id:'T10', pat:'いまさら', mean:'too late now / at this late stage', freq:false,
+      jp:'いまさら<ruby>謝<rt>あやま</rt></ruby>っても<ruby>遅<rt>おそ</rt></ruby>い。',
+      en:'"It\'s too late to apologize now."',
+      note:'Implies the right timing has passed. Resigned/critical tone.' },
+  ]
+},
+{
+  id:'U', name:'同形異義', color:'#8A5F3D', cat:'語彙',
+  desc:'中日同形異義詞：長得一樣意思不同，讀解會誤導、語彙題會設陷阱。',
+  patterns:[
+    { id:'U1', pat:'<ruby>勉強<rt>べんきょう</rt></ruby>', mean:'學習 ≠ 中文「勉強、將就」', freq:true,
+      jp:'<ruby>毎日<rt>まいにち</rt></ruby>3<ruby>時間<rt>じかん</rt></ruby>、<ruby>日本語<rt>にほんご</rt></ruby>を<ruby>勉強<rt>べんきょう</rt></ruby>しています。',
+      en:'"I study Japanese three hours every day."',
+      note:'Also = discount in shop talk: 勉強しますよ (I\'ll give you a deal).' },
+    { id:'U2', pat:'<ruby>深刻<rt>しんこく</rt></ruby>', mean:'嚴重、深沉 ≠ 中文「印象深刻」', freq:true,
+      jp:'<ruby>環境<rt>かんきょう</rt></ruby><ruby>問題<rt>もんだい</rt></ruby>はますます<ruby>深刻<rt>しんこく</rt></ruby>になっている。',
+      en:'"Environmental problems are becoming more and more serious."',
+      note:'深刻な問題 = a GRAVE problem. 「印象深刻」日文說 印象的／印象に残る.' },
+    { id:'U3', pat:'<ruby>迷惑<rt>めいわく</rt></ruby>', mean:'困擾、添麻煩 ≠ 中文「迷惑」', freq:true,
+      jp:'<ruby>人<rt>ひと</rt></ruby>に<ruby>迷惑<rt>めいわく</rt></ruby>をかけないようにしなさい。',
+      en:'"Don\'t cause trouble for others."',
+      note:'迷惑をかける = cause trouble. 中文的「迷惑」日文是 惑わす／戸惑う.' },
+    { id:'U4', pat:'<ruby>丈夫<rt>じょうぶ</rt></ruby>', mean:'堅固、結實 ≠ 中文「丈夫（老公）」', freq:true,
+      jp:'このかばんは<ruby>丈夫<rt>じょうぶ</rt></ruby>で<ruby>長持<rt>ながも</rt></ruby>ちする。',
+      en:'"This bag is sturdy and lasts long."',
+      note:'大丈夫 = it\'s OK. 「老公」日文是 夫／主人.' },
+    { id:'U5', pat:'<ruby>手紙<rt>てがみ</rt></ruby>', mean:'信件 ≠ 中文「衛生紙」', freq:true,
+      jp:'<ruby>祖母<rt>そぼ</rt></ruby>に<ruby>手紙<rt>てがみ</rt></ruby>を<ruby>書<rt>か</rt></ruby>いた。',
+      en:'"I wrote a letter to my grandmother."',
+      note:'Classic trap. 衛生紙日文是 トイレットペーパー.' },
+    { id:'U6', pat:'<ruby>顔色<rt>かおいろ</rt></ruby>', mean:'臉色、氣色（かおいろ）', freq:false,
+      jp:'<ruby>顔色<rt>かおいろ</rt></ruby>が<ruby>悪<rt>わる</rt></ruby>いけど、<ruby>大丈夫<rt>だいじょうぶ</rt></ruby>？',
+      en:'"You look pale — are you OK?"',
+      note:'顔色をうかがう = read someone\'s mood (察言觀色).' },
+    { id:'U7', pat:'<ruby>結構<rt>けっこう</rt></ruby>', mean:'相當／婉拒「不用了」≠ 中文「結構」', freq:true,
+      jp:'もう<ruby>結構<rt>けっこう</rt></ruby>です。／これ、<ruby>結構<rt>けっこう</rt></ruby>おいしいね。',
+      en:'"No thank you, I\'m fine." / "This is pretty tasty."',
+      note:'結構です can mean NO THANKS — a refusal! Big listening trap. 中文「結構」日文是 構造.' },
+    { id:'U8', pat:'<ruby>都合<rt>つごう</rt></ruby>', mean:'方便與否、時間安排（つごう）', freq:true,
+      jp:'その<ruby>日<rt>ひ</rt></ruby>はちょっと<ruby>都合<rt>つごう</rt></ruby>が<ruby>悪<rt>わる</rt></ruby>いです。',
+      en:'"That day doesn\'t really work for me."',
+      note:'都合が悪い = polite refusal of timing. 都合がつく = can make it.' },
+    { id:'U9', pat:'<ruby>遠慮<rt>えんりょ</rt></ruby>', mean:'客氣、迴避 ≠ 中文「深謀遠慮」', freq:true,
+      jp:'どうぞ、<ruby>遠慮<rt>えんりょ</rt></ruby>しないで<ruby>食<rt>た</rt></ruby>べてください。',
+      en:'"Please don\'t hold back — eat up."',
+      note:'ご遠慮ください = please REFRAIN (a polite prohibition!). Announcement staple.' },
+    { id:'U10', pat:'<ruby>愛人<rt>あいじん</rt></ruby>', mean:'情婦／情夫 ≠ 中文「愛人（配偶）」', freq:false,
+      jp:'「<ruby>愛人<rt>あいじん</rt></ruby>」は<ruby>日本語<rt>にほんご</rt></ruby>では<ruby>不倫<rt>ふりん</rt></ruby><ruby>相手<rt>あいて</rt></ruby>のことだ。',
+      en:'"In Japanese, aijin means a person one is having an affair with."',
+      note:'Never introduce your spouse as 愛人! Spouse = 妻／夫／家内／主人.' },
   ]
 },
 ];
@@ -830,39 +1306,39 @@ const COMPARES = [
   {
     title: 'わけにはいかない vs ないわけにはいかない',
     rows: [
-      { pat:'わけにはいかない', desc:"can't do it (social/moral block)", ex:'行くわけにはいかない → "I can\'t go (it would be wrong)"' },
-      { pat:'ないわけにはいかない', desc:"can't NOT do it (must do it)", ex:'行かないわけにはいかない → "I have no choice but to go"' },
+      { pat:'わけにはいかない', desc:"can't do it (social/moral block)", ex:'<ruby>行<rt>い</rt></ruby>くわけにはいかない → "I can\'t go (it would be wrong)"' },
+      { pat:'ないわけにはいかない', desc:"can't NOT do it (must do it)", ex:'<ruby>行<rt>い</rt></ruby>かないわけにはいかない → "I have no choice but to go"' },
     ]
   },
   {
     title: 'だけあって vs だけに vs にしては',
     rows: [
       { pat:'だけあって', desc:'result MATCHES status/effort (impressed)', ex:'プロだけあって、うまい。"As expected of a pro."' },
-      { pat:'だけに', desc:'cause AMPLIFIES result (stronger effect)', ex:'プロだけに、プレッシャーも大きい。"Precisely because a pro, pressure is huge."' },
-      { pat:'にしては', desc:'result is UNEXPECTED for the level', ex:'3ヶ月にしては上手だ。"Pretty good for only 3 months."' },
+      { pat:'だけに', desc:'cause AMPLIFIES result (stronger effect)', ex:'プロだけに、プレッシャーも<ruby>大<rt>おお</rt></ruby>きい。"Precisely because a pro, pressure is huge."' },
+      { pat:'にしては', desc:'result is UNEXPECTED for the level', ex:'3ヶ<ruby>月<rt>げつ</rt></ruby>にしては<ruby>上手<rt>じょうず</rt></ruby>だ。"Pretty good for only 3 months."' },
     ]
   },
   {
     title: 'からには vs 以上は',
     rows: [
-      { pat:'からには', desc:'emotional commitment / personal resolve', ex:'プロになったからには、全力を尽くす。' },
-      { pat:'以上は', desc:'logical/formal obligation (written)', ex:'責任者である以上は、報告する義務がある。' },
+      { pat:'からには', desc:'emotional commitment / personal resolve', ex:'プロになったからには、<ruby>全力<rt>ぜんりょく</rt></ruby>を<ruby>尽<rt>つ</rt></ruby>くす。' },
+      { pat:'<ruby>以上<rt>いじょう</rt></ruby>は', desc:'logical/formal obligation (written)', ex:'<ruby>責任者<rt>せきにんしゃ</rt></ruby>である<ruby>以上<rt>いじょう</rt></ruby>は、<ruby>報告<rt>ほうこく</rt></ruby>する<ruby>義務<rt>ぎむ</rt></ruby>がある。' },
     ]
   },
   {
     title: 'てならない vs てたまらない vs てしょうがない',
     rows: [
-      { pat:'てならない', desc:'deep emotional welling (nostalgia, worry, joy)', ex:'故郷が懐かしくてならない。' },
-      { pat:'てたまらない', desc:'unbearable physical or emotional sensation', ex:'腹が痛くてたまらない。' },
-      { pat:'てしょうがない', desc:"stuck with it, slightly resigned", ex:'あの曲が頭から離れてしょうがない。' },
+      { pat:'てならない', desc:'deep emotional welling (nostalgia, worry, joy)', ex:'<ruby>故郷<rt>こきょう</rt></ruby>が<ruby>懐<rt>なつ</rt></ruby>かしくてならない。' },
+      { pat:'てたまらない', desc:'unbearable physical or emotional sensation', ex:'<ruby>腹<rt>はら</rt></ruby>が<ruby>痛<rt>いた</rt></ruby>くてたまらない。' },
+      { pat:'てしょうがない', desc:"stuck with it, slightly resigned", ex:'あの<ruby>曲<rt>きょく</rt></ruby>が<ruby>頭<rt>あたま</rt></ruby>から<ruby>離<rt>はな</rt></ruby>れてしょうがない。' },
     ]
   },
   {
     title: 'にあたって vs に先立って vs 次第',
     rows: [
-      { pat:'にあたって', desc:'ON THE OCCASION OF (during/for a milestone)', ex:'入学にあたって、準備をする。' },
-      { pat:'に先立って', desc:'PRIOR TO (before X starts)', ex:'式典に先立って、リハーサルする。' },
-      { pat:'次第', desc:'AS SOON AS (the moment X is done)', ex:'準備でき次第、出発する。' },
+      { pat:'にあたって', desc:'ON THE OCCASION OF (during/for a milestone)', ex:'<ruby>入学<rt>にゅうがく</rt></ruby>にあたって、<ruby>準備<rt>じゅんび</rt></ruby>をする。' },
+      { pat:'に<ruby>先立<rt>さきだ</rt></ruby>って', desc:'PRIOR TO (before X starts)', ex:'<ruby>式典<rt>しきてん</rt></ruby>に<ruby>先立<rt>さきだ</rt></ruby>って、リハーサルする。' },
+      { pat:'<ruby>次第<rt>しだい</rt></ruby>', desc:'AS SOON AS (the moment X is done)', ex:'<ruby>準備<rt>じゅんび</rt></ruby>でき<ruby>次第<rt>しだい</rt></ruby>、<ruby>出発<rt>しゅっぱつ</rt></ruby>する。' },
     ]
   },
   {
@@ -872,23 +1348,90 @@ const COMPARES = [
       { pat:'ようだ', desc:'seems' },
       { pat:'らしい', desc:'heard' },
       { pat:'はずだ', desc:'expected' },
-      { pat:'に違いない', desc:'must be' },
+      { pat:'に<ruby>違<rt>ちが</rt></ruby>いない', desc:'must be' },
     ],
     scaleLabel: ['低 (uncertain)', '高 (certain)']
   },
   {
     title: 'によって — Three Meanings',
     rows: [
-      { pat:'依存 (depends on)', desc:'The result varies based on X', ex:'文化によって、マナーが違う。' },
-      { pat:'手段 (by means of)', desc:'X is the method used', ex:'努力によって、夢は叶う。' },
-      { pat:'原因 (due to)', desc:'X is the cause (used as noun modifier)', ex:'地震による被害 (damage due to earthquake)' },
+      { pat:'<ruby>依存<rt>いぞん</rt></ruby> (depends on)', desc:'The result varies based on X', ex:'<ruby>文化<rt>ぶんか</rt></ruby>によって、マナーが<ruby>違<rt>ちが</rt></ruby>う。' },
+      { pat:'<ruby>手段<rt>しゅだん</rt></ruby> (by means of)', desc:'X is the method used', ex:'<ruby>努力<rt>どりょく</rt></ruby>によって、<ruby>夢<rt>ゆめ</rt></ruby>は<ruby>叶<rt>かな</rt></ruby>う。' },
+      { pat:'<ruby>原因<rt>げんいん</rt></ruby> (due to)', desc:'X is the cause (used as noun modifier)', ex:'<ruby>地震<rt>じしん</rt></ruby>による<ruby>被害<rt>ひがい</rt></ruby> (damage due to earthquake)' },
     ]
   },
   {
     title: 'に従って — Two Meanings',
     rows: [
-      { pat:'変化 (progressive change)', desc:'As X progresses, Y naturally changes', ex:'時間が経つに従って、痛みが引いた。' },
-      { pat:'従順 (following a rule)', desc:'Obey / act in accordance with X', ex:'規則に従って行動する。' },
+      { pat:'<ruby>変化<rt>へんか</rt></ruby> (progressive change)', desc:'As X progresses, Y naturally changes', ex:'<ruby>時間<rt>じかん</rt></ruby>が<ruby>経<rt>た</rt></ruby>つに<ruby>従<rt>したが</rt></ruby>って、<ruby>痛<rt>いた</rt></ruby>みが<ruby>引<rt>ひ</rt></ruby>いた。' },
+      { pat:'<ruby>従順<rt>じゅうじゅん</rt></ruby> (following a rule)', desc:'Obey / act in accordance with X', ex:'<ruby>規則<rt>きそく</rt></ruby>に<ruby>従<rt>したが</rt></ruby>って<ruby>行動<rt>こうどう</rt></ruby>する。' },
+    ]
+  },
+  {
+    title: 'かねない vs かねます ⚠️ Opposite!',
+    rows: [
+      { pat:'かねない', desc:'might well happen — BAD outcome (affirmative form!)', ex:'<ruby>事故<rt>じこ</rt></ruby>を<ruby>起<rt>お</rt></ruby>こしかねない。"Could well cause an accident."' },
+      { pat:'かねます', desc:'polite refusal — CANNOT do (no ない, but means no)', ex:'お<ruby>答<rt>こた</rt></ruby>えしかねます。"We are unable to answer."' },
+    ]
+  },
+  {
+    title: '尊敬語 ⇄ 謙譲語 Quick Map',
+    rows: [
+      { pat:'<ruby>行<rt>い</rt></ruby>く・<ruby>来<rt>く</rt></ruby>る・いる', desc:'尊敬: いらっしゃる ／ 謙譲: 伺う・参る', ex:'<ruby>先生<rt>せんせい</rt></ruby>がいらっしゃる ⇄ <ruby>私<rt>わたし</rt></ruby>が<ruby>伺<rt>うかが</rt></ruby>う' },
+      { pat:'<ruby>食<rt>た</rt></ruby>べる・<ruby>飲<rt>の</rt></ruby>む', desc:'尊敬: 召し上がる ／ 謙譲: いただく', ex:'<ruby>召<rt>め</rt></ruby>し<ruby>上<rt>あ</rt></ruby>がってください ⇄ いただきます' },
+      { pat:'<ruby>見<rt>み</rt></ruby>る', desc:'尊敬: ご覧になる ／ 謙譲: 拝見する', ex:'ご<ruby>覧<rt>らん</rt></ruby>になる ⇄ <ruby>拝見<rt>はいけん</rt></ruby>する' },
+      { pat:'<ruby>言<rt>い</rt></ruby>う', desc:'尊敬: おっしゃる ／ 謙譲: 申す', ex:'おっしゃった ⇄ <ruby>申<rt>もう</rt></ruby>します' },
+      { pat:'する', desc:'尊敬: なさる ／ 謙譲: いたす', ex:'なさいますか ⇄ いたします' },
+    ]
+  },
+  {
+    title: 'つい vs うっかり vs 思わず vs わざと',
+    rows: [
+      { pat:'つい', desc:'impulse you failed to resist (habit)', ex:'つい<ruby>食<rt>た</rt></ruby>べちゃった。' },
+      { pat:'うっかり', desc:'careless slip from inattention', ex:'うっかり<ruby>忘<rt>わす</rt></ruby>れた。' },
+      { pat:'<ruby>思<rt>おも</rt></ruby>わず', desc:'instant reflex to a stimulus', ex:'<ruby>思<rt>おも</rt></ruby>わず<ruby>笑<rt>わら</rt></ruby>った。' },
+      { pat:'わざと', desc:'deliberately, on purpose', ex:'わざと<ruby>負<rt>ま</rt></ruby>けた。' },
+    ]
+  },
+  {
+    title: '🎧 Listening Answer Signals',
+    rows: [
+      { pat:'でも／けど', desc:'everything before is a decoy — the REAL opinion follows', ex:'いいと<ruby>思<rt>おも</rt></ruby>うけど、でもやっぱり… → answer is after でも' },
+      { pat:'<ruby>実<rt>じつ</rt></ruby>は', desc:'"actually…" — the true situation comes next', ex:'<ruby>実<rt>じつ</rt></ruby>は、まだ<ruby>終<rt>お</rt></ruby>わってないんです。' },
+      { pat:'やっぱり', desc:'final decision / conclusion after weighing options', ex:'やっぱり<ruby>赤<rt>あか</rt></ruby>いほうにします。→ often THE answer' },
+      { pat:'じゃあ／それなら', desc:'decision made — task answer usually right after', ex:'じゃあ、<ruby>金曜<rt>きんよう</rt></ruby>にしましょう。' },
+    ]
+  },
+  {
+    title: 'そうだ（様態） vs そうだ（伝聞） vs ようだ vs らしい',
+    rows: [
+      { pat:'～そうだ（<ruby>様態<rt>ようたい</rt></ruby>）', desc:'looks about to (my own eyes, ます形＋そう)', ex:'<ruby>空<rt>そら</rt></ruby>が<ruby>暗<rt>くら</rt></ruby>い。<ruby>雨<rt>あめ</rt></ruby>が<ruby>降<rt>ふ</rt></ruby>りそうだ。' },
+      { pat:'～そうだ（<ruby>伝聞<rt>でんぶん</rt></ruby>）', desc:'I heard that (辞書形＋そうだ)', ex:'<ruby>天気<rt>てんき</rt></ruby><ruby>予報<rt>よほう</rt></ruby>によると、<ruby>雨<rt>あめ</rt></ruby>が<ruby>降<rt>ふ</rt></ruby>るそうだ。' },
+      { pat:'～ようだ', desc:'seems (inference from direct observation)', ex:'<ruby>地面<rt>じめん</rt></ruby>が<ruby>濡<rt>ぬ</rt></ruby>れている。<ruby>雨<rt>あめ</rt></ruby>が<ruby>降<rt>ふ</rt></ruby>ったようだ。' },
+      { pat:'～らしい', desc:'apparently (hearsay) / typical of', ex:'<ruby>雨<rt>あめ</rt></ruby>が<ruby>降<rt>ふ</rt></ruby>るらしいよ。／<ruby>今日<rt>きょう</rt></ruby>は<ruby>春<rt>はる</rt></ruby>らしい<ruby>天気<rt>てんき</rt></ruby>だ。' },
+    ]
+  },
+  {
+    title: 'される vs させる vs させられる',
+    rows: [
+      { pat:'される', desc:'passive — subject RECEIVES the action (often annoyed)', ex:'<ruby>電車<rt>でんしゃ</rt></ruby>で<ruby>足<rt>あし</rt></ruby>を<ruby>踏<rt>ふ</rt></ruby>まれた。' },
+      { pat:'させる', desc:'causative — MAKE / LET someone do', ex:'<ruby>母<rt>はは</rt></ruby>は<ruby>子供<rt>こども</rt></ruby>に<ruby>野菜<rt>やさい</rt></ruby>を<ruby>食<rt>た</rt></ruby>べさせた。' },
+      { pat:'させられる', desc:'causative-passive — FORCED to do (speaker suffers)', ex:'2<ruby>時間<rt>じかん</rt></ruby>も<ruby>待<rt>ま</rt></ruby>たされた。' },
+    ]
+  },
+  {
+    title: 'てあげる vs てくれる vs てもらう',
+    rows: [
+      { pat:'てあげる', desc:'I do a favor for others (careful: condescending toward superiors)', ex:'<ruby>友達<rt>ともだち</rt></ruby>に<ruby>写真<rt>しゃしん</rt></ruby>を<ruby>撮<rt>と</rt></ruby>ってあげた。' },
+      { pat:'てくれる', desc:'someone does a favor FOR ME (actor = subject)', ex:'<ruby>友達<rt>ともだち</rt></ruby>が<ruby>写真<rt>しゃしん</rt></ruby>を<ruby>撮<rt>と</rt></ruby>ってくれた。' },
+      { pat:'てもらう', desc:'I RECEIVE the favor (actor = the に person)', ex:'<ruby>友達<rt>ともだち</rt></ruby>に<ruby>写真<rt>しゃしん</rt></ruby>を<ruby>撮<rt>と</rt></ruby>ってもらった。' },
+    ]
+  },
+  {
+    title: '気にする vs 気になる',
+    rows: [
+      { pat:'<ruby>気<rt>き</rt></ruby>にする', desc:'deliberate worrying (controllable) — 気にしないで = don\'t worry', ex:'<ruby>細<rt>こま</rt></ruby>かいことを<ruby>気<rt>き</rt></ruby>にするな。' },
+      { pat:'<ruby>気<rt>き</rt></ruby>になる', desc:'involuntary — it bothers you / you\'re curious', ex:'<ruby>試験<rt>しけん</rt></ruby>の<ruby>結果<rt>けっか</rt></ruby>が<ruby>気<rt>き</rt></ruby>になって<ruby>眠<rt>ねむ</rt></ruby>れない。' },
     ]
   },
 ];
@@ -931,6 +1474,8 @@ function render() {
   const cl = CLUSTERS.find(c => c.id === currentCluster);
   if (!cl) return;
 
+  main.appendChild(buildChips(cl));
+
   const head = document.createElement('div');
   head.className = 'cl-head';
   head.innerHTML = `
@@ -938,6 +1483,7 @@ function render() {
     <div class="cl-info">
       <div class="cl-name">${cl.name}</div>
       <div class="cl-count">${cl.patterns.length} patterns</div>
+      ${cl.desc ? `<div class="cl-desc">${cl.desc}</div>` : ''}
     </div>`;
   main.appendChild(head);
 
@@ -945,7 +1491,7 @@ function render() {
   cl.patterns.forEach(p => {
     if (freqOnly && !p.freq) return;
     shown++;
-    main.appendChild(makeCard(p, cl.color));
+    main.appendChild(makeCard(p, cl.color, cl.stamp || '注'));
   });
 
   if (shown === 0) {
@@ -958,7 +1504,7 @@ function render() {
   updateHeader();
 }
 
-function makeCard(p, color) {
+function makeCard(p, color, stamp) {
   const learned = isLearned(p.id);
   const div = document.createElement('div');
   div.className = `card${div.open ? ' open' : ''}${learned ? ' learned' : ''}`;
@@ -979,7 +1525,7 @@ function makeCard(p, color) {
       <button class="done-btn${learned ? ' done' : ''}" onclick="event.stopPropagation();markDone('${p.id}')">${learned ? '✓ Learned' : 'Mark learned'}</button>
       <div class="ex-jp">${p.jp}</div>
       <div class="ex-en">${p.en}</div>
-      ${p.note ? `<div class="card-note">${p.note.replace(/([A-Z1-9①-⑨]+)/g, '<b>$1</b>')}</div>` : ''}
+      ${p.note ? `<div class="card-note"><span class="note-stamp">${stamp}</span><span class="note-text">${p.note.replace(/([A-Z1-9①-⑨]+)/g, '<b>$1</b>')}</span></div>` : ''}
     </div>`;
   return div;
 }
@@ -988,7 +1534,7 @@ function renderCompare(main) {
   const head = document.createElement('div');
   head.className = 'cl-head';
   head.innerHTML = `
-    <div class="cl-badge" style="background:#58a6ff">⇄</div>
+    <div class="cl-badge" style="background:#25406E">⇄</div>
     <div class="cl-info">
       <div class="cl-name">Comparison Tables</div>
       <div class="cl-count">${COMPARES.length} comparisons</div>
@@ -1032,26 +1578,45 @@ function updateHeader() {
 // ─────────────────────────────────────────────
 //  NAV
 // ─────────────────────────────────────────────
+const CATS = ['文法', '聴解', '敬語', '語彙', '対比'];
+
 function buildNav() {
   const nav = document.getElementById('nav');
   nav.innerHTML = '';
-  const all = [...CLUSTERS, { id:'Z', name:'Compare', color:'#58a6ff' }];
-  all.forEach((cl, i) => {
+  CATS.forEach(cat => {
+    const isCompare = cat === '対比';
+    const clusters = isCompare ? [] : CLUSTERS.filter(c => c.cat === cat);
+    const isActive = isCompare ? currentCluster === 'Z' : clusters.some(c => c.id === currentCluster);
     const btn = document.createElement('button');
-    const isActive = cl.id === currentCluster;
     btn.className = `ntab${isActive ? ' active' : ''}`;
-    if (isActive) btn.style.background = cl.color;
-    if (cl.id === 'Z') {
-      btn.innerHTML = `<span class="ntab-day">⇄</span><span class="ntab-name">Compare</span>`;
-    } else {
-      btn.innerHTML = `<span class="ntab-day">Day ${i + 1}</span><span class="ntab-name">${cl.name}</span>`;
-    }
-    btn.onclick = () => switchCluster(cl.id);
+    btn.innerHTML = `<span class="ntab-name">${cat}</span><span class="ntab-day">${isCompare ? '⇄' : clusters.length + ' 類'}</span>`;
+    btn.onclick = () => switchCat(cat);
     nav.appendChild(btn);
   });
-  // scroll active tab into view
-  const active = nav.querySelector('.ntab.active');
-  if (active) active.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+}
+
+function switchCat(cat) {
+  if (cat === '対比') { switchCluster('Z'); return; }
+  const clusters = CLUSTERS.filter(c => c.cat === cat);
+  if (clusters.some(c => c.id === currentCluster)) { switchCluster(currentCluster); return; }
+  switchCluster(clusters[0].id);
+}
+
+function buildChips(cl) {
+  const wrap = document.createElement('div');
+  wrap.className = 'chips';
+  const siblings = CLUSTERS.filter(c => c.cat === cl.cat);
+  if (siblings.length < 2) return wrap;
+  siblings.forEach(c => {
+    const chip = document.createElement('button');
+    const isActive = c.id === currentCluster;
+    chip.className = `chip${isActive ? ' active' : ''}`;
+    if (isActive) chip.style.background = c.color;
+    chip.textContent = c.name;
+    chip.onclick = () => switchCluster(c.id);
+    wrap.appendChild(chip);
+  });
+  return wrap;
 }
 
 function switchCluster(id) {
@@ -1087,6 +1652,13 @@ function toggleFreq() {
   const btn = document.getElementById('freq-btn');
   btn.classList.toggle('on', freqOnly);
   render();
+}
+
+let rubyOn = true;
+function toggleRuby() {
+  rubyOn = !rubyOn;
+  document.body.classList.toggle('hide-ruby', !rubyOn);
+  document.getElementById('ruby-btn').classList.toggle('on', rubyOn);
 }
 
 function cycleSize() {
